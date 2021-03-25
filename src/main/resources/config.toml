@@ -1,0 +1,11 @@
+# Plugin Settings
+[plugin]
+enabled=true
+
+# Messages:
+# Customise using MiniMessage
+# Link: https://docs.adventure.kyori.net/minimessage.html#format
+# Placeholders: <sender>, <receiver>, <message>
+[messages]
+message-sent="<white>[<gradient:red:blue>YOU</gradient> <strikethrough>→</strikethrough> <gradient:blue:red><receiver></gradient>]</white>: <white><pre><message></pre></white>"
+message-received="<white>[<gradient:red:blue><sender></gradient> <strikethrough>→</strikethrough> <gradient:blue:red>YOU</gradient>]</white>: <white><pre><message></pre></white>"
