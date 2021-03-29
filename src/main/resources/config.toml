@@ -15,6 +15,7 @@ message-socialspy="<gradient:red:blue>SocialSpy: </gradient><white><sender> → 
 # Customise using a TOML string arrray.
 [aliases]
 message=["msg", "tell"]
+reply=["r"]
 socialspy=["ss"]
 
 [developer-info]

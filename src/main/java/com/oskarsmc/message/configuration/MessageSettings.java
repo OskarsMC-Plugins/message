@@ -18,6 +18,7 @@ public class MessageSettings {
     private final String messageSocialSpyMiniMessage;
 
     private final List<String> messageAlias;
+    private final List<String> replyAlias;
     private final List<String> socialSpyAlias;
 
     private final Double configVersion;
@@ -36,6 +37,7 @@ public class MessageSettings {
         this.messageReceivedMiniMessage = toml.getString("messages.message-received");
         this.messageSocialSpyMiniMessage = toml.getString("messages.message-socialspy");
         this.messageAlias = toml.getList("aliases.message");
+        this.replyAlias = toml.getList("aliases.reply");
         this.socialSpyAlias = toml.getList("aliases.socialspy");
 
         this.configVersion = toml.getDouble("developer-info.config-version");
@@ -90,5 +92,9 @@ public class MessageSettings {
 
     public List<String> getSocialSpyAlias() {
         return socialSpyAlias;
+    }
+
+    public List<String> getReplyAlias() {
+        return replyAlias;
     }
 }

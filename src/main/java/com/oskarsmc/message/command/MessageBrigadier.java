@@ -10,6 +10,7 @@ import com.oskarsmc.message.event.MessageEvent;
 import com.velocitypowered.api.command.BrigadierCommand;
 import com.velocitypowered.api.command.CommandMeta;
 import com.velocitypowered.api.command.CommandSource;
+import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import net.kyori.adventure.text.Component;
@@ -21,7 +22,11 @@ import java.util.Map;
 import java.util.Optional;
 
 public class MessageBrigadier {
+    private final MessageSettings messageSettings;
+
     public MessageBrigadier(ProxyServer proxyServer, MessageSettings messageSettings) {
+        this.messageSettings = messageSettings;
+
         LiteralCommandNode<CommandSource> messageCommand = LiteralArgumentBuilder
                 .<CommandSource>literal("message")
                 .executes(context -> {
@@ -36,32 +41,7 @@ public class MessageBrigadier {
                         Optional<Player> playerOptional = proxyServer.getPlayer(context.getArgument("player", String.class));
 
                         if (playerOptional.isPresent()) {
-                            String senderName;
-                            String receiverName;
-
-                            if (context.getSource() instanceof Player) {
-                                Player sender = (Player) context.getSource();
-                                senderName = sender.getUsername();
-                            } else {
-                                senderName = "UNKNOWN";
-                            }
-
                             Player receiver = playerOptional.get();
-                            receiverName = receiver.getUsername();
-
-                            MiniMessage miniMessage = MiniMessage.get();
-
-                            Map<String, String> map = new HashMap<String, String>();
-
-                            map.put("sender", senderName);
-                            map.put("receiver", receiverName);
-                            map.put("message", context.getArgument("message", String.class));
-
-                            Component senderMessage = miniMessage.parse(messageSettings.getMessageSentMiniMessage(), map);
-                            Component receiverMessage = miniMessage.parse(messageSettings.getMessageReceivedMiniMessage(), map);
-
-                            context.getSource().sendMessage(senderMessage);
-                            receiver.sendMessage(receiverMessage);
 
                             proxyServer.getEventManager().fire(new MessageEvent(context.getSource(), receiver, context.getArgument("message", String.class)));
 
@@ -96,5 +76,35 @@ public class MessageBrigadier {
         CommandMeta meta = metaBuilder.build();
 
         proxyServer.getCommandManager().register(meta, messageBrigadier);
+    }
+
+    @Subscribe
+    public void onMessage(MessageEvent event) {
+        String senderName;
+        String receiverName;
+
+        if (event.getSender() instanceof Player) {
+            Player sender = (Player) event.getSender();
+            senderName = sender.getUsername();
+        } else {
+            senderName = "UNKNOWN";
+        }
+
+
+        receiverName = event.getRecipient().getUsername();
+
+        MiniMessage miniMessage = MiniMessage.get();
+
+        Map<String, String> map = new HashMap<String, String>();
+
+        map.put("sender", senderName);
+        map.put("receiver", receiverName);
+        map.put("message", event.getMessage());
+
+        Component senderMessage = miniMessage.parse(messageSettings.getMessageSentMiniMessage(), map);
+        Component receiverMessage = miniMessage.parse(messageSettings.getMessageReceivedMiniMessage(), map);
+
+        event.getSender().sendMessage(senderMessage);
+        event.getRecipient().sendMessage(receiverMessage);
     }
 }
