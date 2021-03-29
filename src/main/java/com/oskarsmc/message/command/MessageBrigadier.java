@@ -11,6 +11,7 @@ import com.velocitypowered.api.command.BrigadierCommand;
 import com.velocitypowered.api.command.CommandMeta;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.event.Subscribe;
+import com.velocitypowered.api.permission.Tristate;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import net.kyori.adventure.text.Component;
@@ -37,7 +38,7 @@ public class MessageBrigadier {
         ArgumentCommandNode<CommandSource, String> messageNode = RequiredArgumentBuilder
                 .<CommandSource, String>argument("message",  StringArgumentType.greedyString())
                 .executes(context -> {
-                    if (context.getSource().hasPermission("osmc.message.send")) {
+                    if (context.getSource().getPermissionValue("osmc.message.send") != Tristate.FALSE) {
                         Optional<Player> playerOptional = proxyServer.getPlayer(context.getArgument("player", String.class));
 
                         if (playerOptional.isPresent()) {
