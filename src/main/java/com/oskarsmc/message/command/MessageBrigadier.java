@@ -6,6 +6,7 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.ArgumentCommandNode;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.oskarsmc.message.configuration.MessageSettings;
+import com.oskarsmc.message.event.MessageEvent;
 import com.velocitypowered.api.command.BrigadierCommand;
 import com.velocitypowered.api.command.CommandMeta;
 import com.velocitypowered.api.command.CommandSource;
@@ -61,6 +62,8 @@ public class MessageBrigadier {
 
                             context.getSource().sendMessage(senderMessage);
                             receiver.sendMessage(receiverMessage);
+
+                            proxyServer.getEventManager().fire(new MessageEvent(context.getSource(), receiver, context.getArgument("message", String.class)));
 
                             return 1;
                         }
