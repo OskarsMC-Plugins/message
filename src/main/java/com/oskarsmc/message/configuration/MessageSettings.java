@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.List;
 
 public class MessageSettings {
     private final File dataFolder;
@@ -15,6 +16,10 @@ public class MessageSettings {
     private final String messageSentMiniMessage;
     private final String messageReceivedMiniMessage;
     private final String messageSocialSpyMiniMessage;
+
+    private final List<String> messageAlias;
+    private final List<String> socialSpyAlias;
+
     private final Double configVersion;
     private boolean enabled;
 
@@ -30,6 +35,8 @@ public class MessageSettings {
         this.messageSentMiniMessage = toml.getString("messages.message-sent");
         this.messageReceivedMiniMessage = toml.getString("messages.message-received");
         this.messageSocialSpyMiniMessage = toml.getString("messages.message-socialspy");
+        this.messageAlias = toml.getList("aliases.message");
+        this.socialSpyAlias = toml.getList("aliases.socialspy");
 
         this.configVersion = toml.getDouble("developer-info.config-version");
     }
@@ -75,5 +82,13 @@ public class MessageSettings {
 
     public String getMessageSocialSpyMiniMessage() {
         return messageSocialSpyMiniMessage;
+    }
+
+    public List<String> getMessageAlias() {
+        return messageAlias;
+    }
+
+    public List<String> getSocialSpyAlias() {
+        return socialSpyAlias;
     }
 }

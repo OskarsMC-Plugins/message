@@ -87,9 +87,13 @@ public class MessageBrigadier {
         BrigadierCommand messageBrigadier = new BrigadierCommand(messageCommand);
 
 
-        CommandMeta meta = proxyServer.getCommandManager().metaBuilder(messageBrigadier)
-                .aliases("msg") // Use seperate alias plugin or add configuration for aliases??
-                .build();
+        CommandMeta.Builder metaBuilder = proxyServer.getCommandManager().metaBuilder(messageBrigadier);
+
+        for (String alias : messageSettings.getMessageAlias()) {
+            metaBuilder.aliases(alias);
+        }
+
+        CommandMeta meta = metaBuilder.build();
 
         proxyServer.getCommandManager().register(meta, messageBrigadier);
     }
