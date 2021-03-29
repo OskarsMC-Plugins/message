@@ -2,6 +2,7 @@ package com.oskarsmc.message;
 
 import com.google.inject.Inject;
 import com.oskarsmc.message.command.MessageBrigadier;
+import com.oskarsmc.message.command.ReplyBrigadier;
 import com.oskarsmc.message.command.SocialSpyBrigadier;
 import com.oskarsmc.message.configuration.MessageSettings;
 import com.oskarsmc.message.util.VersionUtils;
@@ -37,6 +38,7 @@ public class Message {
     private MessageSettings messageSettings;
     private MessageBrigadier messageBrigadier;
     private SocialSpyBrigadier socialSpyBrigadier;
+    private ReplyBrigadier replyBrigadier;
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
@@ -50,9 +52,14 @@ public class Message {
         }
 
         if (messageSettings.isEnabled()) {
-            messageBrigadier = new MessageBrigadier(this.proxyServer, this.messageSettings);
-            socialSpyBrigadier = new SocialSpyBrigadier(this.proxyServer, this.messageSettings);
-            proxyServer.getEventManager().register(this, socialSpyBrigadier);
+            this.messageBrigadier = new MessageBrigadier(this.proxyServer, this.messageSettings);
+            this.socialSpyBrigadier = new SocialSpyBrigadier(this.proxyServer, this.messageSettings);
+            this.replyBrigadier = new ReplyBrigadier(this.proxyServer, this.messageSettings);
+
+
+            this.proxyServer.getEventManager().register(this, this.messageBrigadier);
+            this.proxyServer.getEventManager().register(this, this.socialSpyBrigadier);
+            this.proxyServer.getEventManager().register(this, this.replyBrigadier);
         }
     }
 }
