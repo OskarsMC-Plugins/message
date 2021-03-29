@@ -11,5 +11,11 @@ message-sent="<white>[<gradient:red:blue>YOU</gradient> <strikethrough>→</stri
 message-received="<white>[<gradient:red:blue><sender></gradient> <strikethrough>→</strikethrough> <gradient:blue:red>YOU</gradient>]</white>: <white><pre><message></pre></white>"
 message-socialspy="<gradient:red:blue>SocialSpy: </gradient><white><sender> → <receiver>: <message>"
 
+# Aliases:
+# Customise using a TOML string arrray.
+[aliases]
+message=["msg", "tell"]
+socialspy=["ss"]
+
 [developer-info]
-config-version=0.1
+config-version=0.2

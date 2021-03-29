@@ -66,10 +66,13 @@ public class SocialSpyBrigadier {
 
         BrigadierCommand socialSpyBrigadier = new BrigadierCommand(socialSpyCommand);
 
+        CommandMeta.Builder metaBuilder = proxyServer.getCommandManager().metaBuilder(socialSpyBrigadier);
 
-        CommandMeta meta = proxyServer.getCommandManager().metaBuilder(socialSpyBrigadier)
-                .aliases("ss") // Use seperate alias plugin or add configuration for aliases??
-                .build();
+        for (String alias : messageSettings.getSocialSpyAlias()) {
+            metaBuilder.aliases(alias);
+        }
+
+        CommandMeta meta = metaBuilder.build();
 
         proxyServer.getCommandManager().register(meta, socialSpyBrigadier);
     }
