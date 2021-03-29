@@ -2,7 +2,9 @@ package com.oskarsmc.message;
 
 import com.google.inject.Inject;
 import com.oskarsmc.message.command.MessageBrigadier;
+import com.oskarsmc.message.command.SocialSpyBrigadier;
 import com.oskarsmc.message.configuration.MessageSettings;
+import com.oskarsmc.message.util.VersionUtils;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.plugin.Plugin;
@@ -34,13 +36,23 @@ public class Message {
 
     private MessageSettings messageSettings;
     private MessageBrigadier messageBrigadier;
+    private SocialSpyBrigadier socialSpyBrigadier;
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
         this.messageSettings = new MessageSettings(dataDirectory.toFile());
 
+        if (!VersionUtils.isLatestConfigVersion(messageSettings)) {
+            logger.warn("Your Config is out of date (Latest: " + VersionUtils.CONFIG_VERSION + ", Config Version: " + messageSettings.getConfigVersion() + ")!");
+            logger.warn("Please backup your current config.toml, and delete the current one. A new config will then be created on the next proxy launch.");
+            logger.warn("The plugin's functionality will not be enabled until the config is updated.");
+            messageSettings.setEnabled(false);
+        }
+
         if (messageSettings.isEnabled()) {
             messageBrigadier = new MessageBrigadier(this.proxyServer, this.messageSettings);
+            socialSpyBrigadier = new SocialSpyBrigadier(this.proxyServer, this.messageSettings);
+            proxyServer.getEventManager().register(this, socialSpyBrigadier);
         }
     }
 }

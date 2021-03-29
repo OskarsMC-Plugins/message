@@ -14,7 +14,9 @@ public class MessageSettings {
 
     private final String messageSentMiniMessage;
     private final String messageReceivedMiniMessage;
-    private final boolean enabled;
+    private final String messageSocialSpyMiniMessage;
+    private final Double configVersion;
+    private boolean enabled;
 
     public MessageSettings(File dataFolder) {
         this.dataFolder = dataFolder;
@@ -27,6 +29,9 @@ public class MessageSettings {
 
         this.messageSentMiniMessage = toml.getString("messages.message-sent");
         this.messageReceivedMiniMessage = toml.getString("messages.message-received");
+        this.messageSocialSpyMiniMessage = toml.getString("messages.message-socialspy");
+
+        this.configVersion = toml.getDouble("developer-info.config-version");
     }
 
     private void saveDefaultConfig() {
@@ -58,5 +63,17 @@ public class MessageSettings {
 
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+ this.enabled = enabled;
+    }
+
+    public Double getConfigVersion() {
+        return configVersion;
+    }
+
+    public String getMessageSocialSpyMiniMessage() {
+        return messageSocialSpyMiniMessage;
     }
 }
