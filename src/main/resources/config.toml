@@ -1,36 +1,36 @@
 # Plugin Settings
 [plugin]
-enabled=true
+    enabled=true
 
 # Messages:
 # Customise using MiniMessage
 # Link: https://docs.adventure.kyori.net/minimessage.html#format
 # Placeholders: <sender>, <receiver>, <message>
 [messages]
-message-sent="<white>[<gradient:red:blue>YOU</gradient> <strikethrough>→</strikethrough> <gradient:blue:red><receiver></gradient>]</white>: <white><pre><message></pre></white>"
-message-received="<white>[<gradient:red:blue><sender></gradient> <strikethrough>→</strikethrough> <gradient:blue:red>YOU</gradient>]</white>: <white><pre><message></pre></white>"
-message-socialspy="<gradient:red:blue>SocialSpy: </gradient><white><sender> → <receiver>: <message>"
+    message-sent="<white>[<gradient:red:blue>YOU</gradient> <strikethrough>→</strikethrough> <gradient:blue:red><receiver></gradient>]</white>: <white><pre><message></pre></white>"
+    message-received="<white>[<gradient:red:blue><sender></gradient> <strikethrough>→</strikethrough> <gradient:blue:red>YOU</gradient>]</white>: <white><pre><message></pre></white>"
+    message-socialspy="<gradient:red:blue>SocialSpy: </gradient><white><sender> → <receiver>: <message>"
 
 # Aliases:
 # Customise using a TOML string arrray.
 [aliases]
-message=["msg", "tell"]
-reply=["r"]
-socialspy=["ss"]
+    message=["msg", "tell"]
+    reply=["r"]
+    socialspy=["ss"]
 
 # Error messages:
 # Customise using MiniMessage
 # Link: https://docs.adventure.kyori.net/minimessage.html#format
 # Placeholders: None
 [error-messages]
-# General
-no-permission="<red>You do not have permission to execute this command.</red>"
-# Message
-message-player-not-found="<red>That player was not found.</red>"
-message-usage="<red>Usage: /message \\<player\\> \\<message\\></red>"
-# Reply
-reply-no-player-found="<red>Unable to reply.</red>"
-reply-usage="<red>Usage: /reply \\<message\\></red>"
+    # General
+    no-permission="<red>You do not have permission to execute this command.</red>"
+    # Message
+    message-player-not-found="<red>That player was not found.</red>"
+    message-usage="<red>Usage: /message \\<player\\> \\<message\\></red>"
+    # Reply
+    reply-no-player-found="<red>Unable to reply.</red>"
+    reply-usage="<red>Usage: /reply \\<message\\></red>"
 
 [developer-info]
-config-version=0.3
+    config-version=0.3
