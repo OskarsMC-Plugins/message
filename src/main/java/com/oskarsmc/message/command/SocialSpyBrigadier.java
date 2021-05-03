@@ -15,7 +15,6 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.Template;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,10 +79,10 @@ public class SocialSpyBrigadier {
     @Subscribe
     public void onMessage(MessageEvent event) {
         String senderName;
-        String receiverName = event.getRecipient().getUsername();
+        String receiverName = event.recipient().getUsername();
 
-        if (event.getSender() instanceof Player) {
-            Player sender = (Player) event.getSender();
+        if (event.sender() instanceof Player) {
+            Player sender = (Player) event.sender();
             senderName = sender.getUsername();
         } else {
             senderName = "UNKNOWN";
@@ -95,7 +94,7 @@ public class SocialSpyBrigadier {
 
         map.put("sender", senderName);
         map.put("receiver", receiverName);
-        map.put("message", event.getMessage());
+        map.put("message", event.message());
 
         Component socialSpyMessageComponent = miniMessage.parse(messageSettings.getMessageSocialSpyMiniMessage(), map);
 

@@ -70,11 +70,11 @@ public class ReplyBrigadier {
 
     @Subscribe
     public void messageEvent(MessageEvent event) {
-        if (event.getSender() instanceof Player) {
-            Player sender = (Player) event.getSender();
-            playerConversations.remove(event.getRecipient());
+        if (event.sender() instanceof Player) {
+            Player sender = (Player) event.sender();
+            playerConversations.remove(event.recipient());
 
-            playerConversations.put(event.getRecipient(), sender);
+            playerConversations.put(event.recipient(), sender);
         }
     }
 

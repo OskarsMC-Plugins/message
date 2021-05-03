@@ -16,7 +16,6 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +36,7 @@ public class MessageBrigadier {
                 .build();
 
         ArgumentCommandNode<CommandSource, String> messageNode = RequiredArgumentBuilder
-                .<CommandSource, String>argument("message",  StringArgumentType.greedyString())
+                .<CommandSource, String>argument("message", StringArgumentType.greedyString())
                 .executes(context -> {
                     if (context.getSource().getPermissionValue("osmc.message.send") != Tristate.FALSE) {
                         Optional<Player> playerOptional = proxyServer.getPlayer(context.getArgument("player", String.class));
@@ -45,7 +44,7 @@ public class MessageBrigadier {
                         if (playerOptional.isPresent()) {
                             Player receiver = playerOptional.get();
 
-                            proxyServer.getEventManager().fire(new MessageEvent(context.getSource(), receiver, context.getArgument("message", String.class)));
+                            proxyServer.getEventManager().fire(new MessageEvent(context.getSource(), receiver, context.getArgument("message", String.class))).thenAccept((this::messageLogic));
 
                             return 1;
                         } else {
@@ -88,33 +87,34 @@ public class MessageBrigadier {
         proxyServer.getCommandManager().register(meta, messageBrigadier);
     }
 
-    @Subscribe
-    public void onMessage(MessageEvent event) {
-        String senderName;
-        String receiverName;
+    public void messageLogic(MessageEvent event) {
+        if (event.getResult().isAllowed()) {
+            String senderName;
+            String receiverName;
 
-        if (event.getSender() instanceof Player) {
-            Player sender = (Player) event.getSender();
-            senderName = sender.getUsername();
-        } else {
-            senderName = "UNKNOWN";
+            if (event.sender() instanceof Player) {
+                Player sender = (Player) event.sender();
+                senderName = sender.getUsername();
+            } else {
+                senderName = "UNKNOWN";
+            }
+
+
+            receiverName = event.recipient().getUsername();
+
+            MiniMessage miniMessage = MiniMessage.get();
+
+            Map<String, String> map = new HashMap<String, String>();
+
+            map.put("sender", senderName);
+            map.put("receiver", receiverName);
+            map.put("message", event.message());
+
+            Component senderMessage = miniMessage.parse(messageSettings.getMessageSentMiniMessage(), map);
+            Component receiverMessage = miniMessage.parse(messageSettings.getMessageReceivedMiniMessage(), map);
+
+            event.sender().sendMessage(senderMessage);
+            event.recipient().sendMessage(receiverMessage);
         }
-
-
-        receiverName = event.getRecipient().getUsername();
-
-        MiniMessage miniMessage = MiniMessage.get();
-
-        Map<String, String> map = new HashMap<String, String>();
-
-        map.put("sender", senderName);
-        map.put("receiver", receiverName);
-        map.put("message", event.getMessage());
-
-        Component senderMessage = miniMessage.parse(messageSettings.getMessageSentMiniMessage(), map);
-        Component receiverMessage = miniMessage.parse(messageSettings.getMessageReceivedMiniMessage(), map);
-
-        event.getSender().sendMessage(senderMessage);
-        event.getRecipient().sendMessage(receiverMessage);
     }
 }
