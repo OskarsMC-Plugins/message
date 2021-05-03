@@ -3,7 +3,7 @@ Cross Server Messaging Platform for Velocity
 
 ## Commands
 
-### Broadcast:
+### Message:
 
     /message <player> <message>
     /msg <player> <message>
