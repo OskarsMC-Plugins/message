@@ -18,9 +18,10 @@ import com.velocitypowered.api.proxy.ProxyServer;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ReplyBrigadier {
-    public HashMap<Player, Player> playerConversations = new HashMap<Player, Player>();
+    public ConcurrentHashMap<Player, Player> playerConversations = new ConcurrentHashMap<Player, Player>();
 
     public ReplyBrigadier(ProxyServer proxyServer, MessageSettings messageSettings) {
         LiteralCommandNode<CommandSource> replyCommand = LiteralArgumentBuilder
