@@ -15,13 +15,9 @@ import com.velocitypowered.api.event.connection.DisconnectEvent;
 import com.velocitypowered.api.permission.Tristate;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Optional;
 
 public class ReplyBrigadier {
     public HashMap<Player, Player> playerConversations = new HashMap<Player, Player>();
@@ -30,6 +26,7 @@ public class ReplyBrigadier {
         LiteralCommandNode<CommandSource> replyCommand = LiteralArgumentBuilder
                 .<CommandSource>literal("reply")
                 .executes(context -> {
+                    context.getSource().sendMessage(messageSettings.getReplyUsageComponent());
                     return 1;
                 })
                 .build();
@@ -45,11 +42,13 @@ public class ReplyBrigadier {
                                 proxyServer.getEventManager().fire(new MessageEvent(player, playerConversations.get(player), context.getArgument("message", String.class)));
                                 return 1;
                             } else {
-                                // TODO: Custom Error/Warning Message
+                                context.getSource().sendMessage(messageSettings.getReplyNoPlayerFoundComponent());
                             }
                         } else {
-                            // TODO: Custom Error/Warning Message
+                            // Something here i guess?
                         }
+                    } else {
+                        context.getSource().sendMessage(messageSettings.getNoPermissionComponent());
                     }
                     return 0;
                 }).build();

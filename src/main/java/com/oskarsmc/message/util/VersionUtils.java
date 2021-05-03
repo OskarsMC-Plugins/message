@@ -4,7 +4,7 @@ import com.oskarsmc.message.configuration.MessageSettings;
 
 public class VersionUtils {
 
-    public static final double CONFIG_VERSION = 0.2;
+    public static final double CONFIG_VERSION = 0.3;
 
     public static boolean isLatestConfigVersion(MessageSettings messageSettings) {
         if (messageSettings.getConfigVersion() == null) {

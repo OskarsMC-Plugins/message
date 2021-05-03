@@ -42,20 +42,12 @@ public class Message {
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        this.messageSettings = new MessageSettings(dataDirectory.toFile());
-
-        if (!VersionUtils.isLatestConfigVersion(messageSettings)) {
-            logger.warn("Your Config is out of date (Latest: " + VersionUtils.CONFIG_VERSION + ", Config Version: " + messageSettings.getConfigVersion() + ")!");
-            logger.warn("Please backup your current config.toml, and delete the current one. A new config will then be created on the next proxy launch.");
-            logger.warn("The plugin's functionality will not be enabled until the config is updated.");
-            messageSettings.setEnabled(false);
-        }
+        this.messageSettings = new MessageSettings(dataDirectory.toFile(), logger);
 
         if (messageSettings.isEnabled()) {
             this.messageBrigadier = new MessageBrigadier(this.proxyServer, this.messageSettings);
             this.socialSpyBrigadier = new SocialSpyBrigadier(this.proxyServer, this.messageSettings);
             this.replyBrigadier = new ReplyBrigadier(this.proxyServer, this.messageSettings);
-
 
             this.proxyServer.getEventManager().register(this, this.messageBrigadier);
             this.proxyServer.getEventManager().register(this, this.socialSpyBrigadier);

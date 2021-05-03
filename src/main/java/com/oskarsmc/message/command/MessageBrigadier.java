@@ -31,7 +31,8 @@ public class MessageBrigadier {
         LiteralCommandNode<CommandSource> messageCommand = LiteralArgumentBuilder
                 .<CommandSource>literal("message")
                 .executes(context -> {
-                    return 1;
+                    context.getSource().sendMessage(messageSettings.getMessageUsageComponent());
+                    return 0;
                 })
                 .build();
 
@@ -47,7 +48,11 @@ public class MessageBrigadier {
                             proxyServer.getEventManager().fire(new MessageEvent(context.getSource(), receiver, context.getArgument("message", String.class)));
 
                             return 1;
+                        } else {
+                            context.getSource().sendMessage(messageSettings.getMessagePlayerNotFoundComponent());
                         }
+                    } else {
+                        context.getSource().sendMessage(messageSettings.getNoPermissionComponent());
                     }
                     return 0;
                 }).build();
@@ -59,6 +64,10 @@ public class MessageBrigadier {
                         builder.suggest(player.getGameProfile().getName());
                     }
                     return builder.buildFuture();
+                })
+                .executes(context -> {
+                    context.getSource().sendMessage(messageSettings.getMessageUsageComponent());
+                    return 0;
                 })
                 .build();
 
