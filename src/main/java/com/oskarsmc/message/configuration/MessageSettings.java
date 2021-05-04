@@ -65,7 +65,7 @@ public class MessageSettings {
         this.noPermissionComponent = MiniMessage.get().parse(toml.getString("error-messages.no-permission"));
 
         // Errors - Message
-        this.messagePlayerNotFoundComponent = MiniMessage.get().parse(toml.getString("error-messages.player-not-found"));
+        this.messagePlayerNotFoundComponent = MiniMessage.get().parse(toml.getString("error-messages.message-player-not-found"));
         this.messageUsageComponent = MiniMessage.get().parse(toml.getString("error-messages.message-usage"));
 
         // Errors - Reply
