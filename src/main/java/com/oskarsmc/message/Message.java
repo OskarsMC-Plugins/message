@@ -20,14 +20,6 @@ import java.nio.file.Path;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Plugin(
-        id = "message",
-        name = "Message",
-        version = "0.1.0",
-        description = "Cross Server Messaging Platform for Velocity",
-        url = "https://software.oskarsmc.com/",
-        authors = {"OskarsMC", "OskarZyg"}
-)
 public class Message {
 
     @Inject

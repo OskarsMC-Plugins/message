@@ -6,7 +6,7 @@
 
     <groupId>com.oskarsmc</groupId>
     <artifactId>message</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.1</version>
     <packaging>jar</packaging>
 
     <name>Message</name>
@@ -75,6 +75,7 @@
     </profiles>
 
     <build>
+        <finalName>message-${project.version}</finalName>
         <resources>
             <resource>
                 <directory>${project.basedir}/src/main/resources</directory>
@@ -90,19 +91,6 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>templating-maven-plugin</artifactId>
-                <version>1.0.0</version>
-                <executions>
-                    <execution>
-                        <id>filter-src</id>
-                        <goals>
-                            <goal>filter-sources</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -142,7 +130,11 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>com.oskarsmc</shadedPattern>
+                            <shadedPattern>com.oskarsmc.message.relocated.bstats</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.kyori</pattern>
+                            <shadedPattern>com.oskarsmc.message.relocated.kyori</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -194,6 +186,7 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-minimessage</artifactId>
             <version>4.1.0-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.bstats</groupId>

@@ -1,0 +1,10 @@
+{
+  "id":"message",
+  "name":"Message",
+  "version":"${project.version}",
+  "description":"Cross Server Messaging Platform for Velocity",
+  "url":"https://software.oskarsmc.com/",
+  "authors":["OskarsMC","OskarZyg"],
+  "dependencies":[],
+  "main":"com.oskarsmc.message.Message"
+}
