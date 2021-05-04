@@ -16,20 +16,17 @@ public class MessageSettings {
     private final File dataFolder;
     private final File file;
 
-    private final String messageSentMiniMessage;
-    private final String messageReceivedMiniMessage;
-    private final String messageSocialSpyMiniMessage;
-
-    private final List<String> messageAlias;
-    private final List<String> replyAlias;
-    private final List<String> socialSpyAlias;
-
-    private final Component noPermissionComponent;
-    private final Component messagePlayerNotFoundComponent;
-    private final Component messageUsageComponent;
-
-    private final Component replyNoPlayerFoundComponent;
-    private final Component replyUsageComponent;
+    private  String messageSentMiniMessage;
+    private  String messageReceivedMiniMessage;
+    private  String messageSocialSpyMiniMessage;
+    private  List<String> messageAlias;
+    private  List<String> replyAlias;
+    private  List<String> socialSpyAlias;
+    private  Component noPermissionComponent;
+    private  Component messagePlayerNotFoundComponent;
+    private  Component messageUsageComponent;
+    private  Component replyNoPlayerFoundComponent;
+    private  Component replyUsageComponent;
 
     private final Double configVersion;
     private boolean enabled;
@@ -51,14 +48,7 @@ public class MessageSettings {
             logger.warn("Please backup your current config.toml, and delete the current one. A new config will then be created on the next proxy launch.");
             logger.warn("The plugin's functionality will not be enabled until the config is updated.");
             this.setEnabled(false);
-        }
-
-        if (!this.enabled) {
-            this.noPermissionComponent = Component.empty();
-            this.messagePlayerNotFoundComponent = Component.empty();
-            this.messageUsageComponent = Component.empty();
-            this.replyNoPlayerFoundComponent = Component.empty();
-            this.replyUsageComponent = Component.empty();
+            return;
         }
 
         // Messages
