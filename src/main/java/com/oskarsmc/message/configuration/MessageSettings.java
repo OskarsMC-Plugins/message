@@ -51,7 +51,14 @@ public class MessageSettings {
             logger.warn("Please backup your current config.toml, and delete the current one. A new config will then be created on the next proxy launch.");
             logger.warn("The plugin's functionality will not be enabled until the config is updated.");
             this.setEnabled(false);
-            return;
+        }
+
+        if (!this.enabled) {
+            this.noPermissionComponent = Component.empty();
+            this.messagePlayerNotFoundComponent = Component.empty();
+            this.messageUsageComponent = Component.empty();
+            this.replyNoPlayerFoundComponent = Component.empty();
+            this.replyUsageComponent = Component.empty();
         }
 
         // Messages
