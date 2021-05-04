@@ -42,6 +42,16 @@ public class MessageSettings {
         Toml toml = loadConfig();
 
         this.enabled = toml.getBoolean("plugin.enabled");
+        
+        // Version
+        this.configVersion = toml.getDouble("developer-info.config-version");
+
+        if (!VersionUtils.isLatestConfigVersion(this)) {
+            logger.warn("Your Config is out of date (Latest: " + VersionUtils.CONFIG_VERSION + ", Config Version: " + this.getConfigVersion() + ")!");
+            logger.warn("Please backup your current config.toml, and delete the current one. A new config will then be created on the next proxy launch.");
+            logger.warn("The plugin's functionality will not be enabled until the config is updated.");
+            this.setEnabled(false);
+        }
 
         // Messages
         this.messageSentMiniMessage = toml.getString("messages.message-sent");
@@ -63,16 +73,6 @@ public class MessageSettings {
         // Errors - Reply
         this.replyNoPlayerFoundComponent = MiniMessage.get().parse(toml.getString("error-messages.reply-no-player-found"));
         this.replyUsageComponent = MiniMessage.get().parse(toml.getString("error-messages.reply-usage"));
-
-        // Version
-        this.configVersion = toml.getDouble("developer-info.config-version");
-
-        if (!VersionUtils.isLatestConfigVersion(this)) {
-            logger.warn("Your Config is out of date (Latest: " + VersionUtils.CONFIG_VERSION + ", Config Version: " + this.getConfigVersion() + ")!");
-            logger.warn("Please backup your current config.toml, and delete the current one. A new config will then be created on the next proxy launch.");
-            logger.warn("The plugin's functionality will not be enabled until the config is updated.");
-            this.setEnabled(false);
-        }
     }
 
     private void saveDefaultConfig() {
