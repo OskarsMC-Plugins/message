@@ -94,45 +94,57 @@ Cross Server Messaging Platform for Velocity
 ```toml
 # Plugin Settings
 [plugin]
-    enabled=true
+enabled=true
 
 # Messages:
 # Customise using MiniMessage
 # Link: https://docs.adventure.kyori.net/minimessage.html#format
 # Placeholders: <sender>, <receiver>, <message>
 [messages]
-    message-sent="<white>[<gradient:red:blue>YOU</gradient> <strikethrough>→</strikethrough> <gradient:blue:red><receiver></gradient>]</white>: <white><pre><message></pre></white>"
-    message-received="<white>[<gradient:red:blue><sender></gradient> <strikethrough>→</strikethrough> <gradient:blue:red>YOU</gradient>]</white>: <white><pre><message></pre></white>"
-    message-socialspy="<gradient:red:blue>SocialSpy: </gradient><white><sender> → <receiver>: <message>"
-
+# Message
+message-sent="<white>[<gradient:red:blue>YOU</gradient> <strikethrough>→</strikethrough> <gradient:blue:red><receiver></gradient>]</white>: <white><pre><message></pre></white>"
+message-received="<white>[<gradient:red:blue><sender></gradient> <strikethrough>→</strikethrough> <gradient:blue:red>YOU</gradient>]</white>: <white><pre><message></pre></white>"
+# SocialSpy
+message-socialspy="<gradient:red:blue>SocialSpy: </gradient><white><sender> → <receiver>: <message>"
+socialspy-enabled="<yellow>SocialSpy enabled.</yellow>"
+socialspy-disabled="<yellow>SocialSpy disabled.</yellow>"
+socialspy-toggle="<yellow>SocialSpy toggled [<true-or-false>]</yellow>" # <true-or-false> returns the value of "socialspy-toggle-true" or "socialspy-toggle-false" depending on the context.
+socialspy-toggle-true="<green>✓</green>"
+socialspy-toggle-false="<red>✕</red>"
 # Aliases:
 # Customise using a TOML string arrray.
 [aliases]
-    message=["msg", "tell"]
-    reply=["r"]
-    socialspy=["ss"]
+message=["msg", "tell"]
+reply=["r"]
+socialspy=["ss"]
 
 # Error messages:
 # Customise using MiniMessage
 # Link: https://docs.adventure.kyori.net/minimessage.html#format
 # Placeholders: None
 [error-messages]
-    # General
-    no-permission="<red>You do not have permission to execute this command.</red>"
-    # Message
-    message-player-not-found="<red>That player was not found.</red>"
-    message-usage="<red>Usage: /message \\<player\\> \\<message\\></red>"
-    # Reply
-    reply-no-player-found="<red>Unable to reply.</red>"
-    reply-usage="<red>Usage: /reply \\<message\\></red>"
+# General
+no-permission="<red>You do not have permission to execute this command.</red>"
+# Message
+message-player-not-found="<red>That player was not found.</red>"
+message-usage="<red>Usage: /message \\<player\\> \\<message\\></red>"
+# Reply
+reply-no-player-found="<red>Unable to reply.</red>"
+reply-usage="<red>Usage: /reply \\<message\\></red>"
+# SocialSpy
+socialspy-usage="<red>Usage: /socialspy <on|off|toggle></red>"
 
 [developer-info]
-    config-version=0.3
+config-version=0.4
 ```
 ### Default:
 <img src="https://i.imgur.com/H51JW09.png">
-
-// More images soon!
+<br>
+<img src="https://i.imgur.com/yZxbinH.png">
+<br>
+<img src="https://i.imgur.com/m2f6E3Z.png">
+<br>
+<img src="https://i.imgur.com/jMPI9KO.png">
 
 ### Don't understand X? Take a look at some docs:
 * <a href="https://docs.adventure.kyori.net/minimessage.html#the-components">MiniMessage: The Components</a>
@@ -143,4 +155,4 @@ Cross Server Messaging Platform for Velocity
 * <a href="https://github.com/KyoriPowered">@KyoriPowered</a>
 
 ## Download:
-https://github.com/OskarsMC-Plugins/message/releases/tag/0.2.0
+https://github.com/OskarsMC-Plugins/message/releases/tag/0.2.2
