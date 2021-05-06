@@ -31,7 +31,8 @@ public class SocialSpyBrigadier {
         LiteralCommandNode<CommandSource> socialSpyCommand = LiteralArgumentBuilder
                 .<CommandSource>literal("socialspy")
                 .executes(context -> {
-                    return 1;
+                    context.getSource().sendMessage(this.messageSettings.getSocialSpyUsage());
+                    return 0;
                 })
                 .build();
 
@@ -47,15 +48,23 @@ public class SocialSpyBrigadier {
                     if (context.getSource().hasPermission("osmc.message.socialspy")) {
                         if (context.getArgument("action", String.class).equals("on")) {
                             watching.add(context.getSource());
+                            context.getSource().sendMessage(this.messageSettings.getSocialSpyEnabled());
                         } else if (context.getArgument("action", String.class).equals("off")) {
                             watching.remove(context.getSource());
+                            context.getSource().sendMessage(this.messageSettings.getSocialSpyDisabled());
                         } else if (context.getArgument("action", String.class).equals("toggle")) {
                             if (watching.contains(context.getSource())) {
                                 watching.remove(context.getSource());
+                                context.getSource().sendMessage(this.messageSettings.getSocialSpyToggleFalse());
                             } else {
                                 watching.add(context.getSource());
+                                context.getSource().sendMessage(this.messageSettings.getSocialSpyToggleTrue());
                             }
+                        } else {
+                            context.getSource().sendMessage(this.messageSettings.getSocialSpyUsage());
                         }
+                    }  else {
+                        context.getSource().sendMessage(this.messageSettings.getNoPermissionComponent());
                     }
                     return 0;
                 })

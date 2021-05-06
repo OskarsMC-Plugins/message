@@ -7,10 +7,16 @@
 # Link: https://docs.adventure.kyori.net/minimessage.html#format
 # Placeholders: <sender>, <receiver>, <message>
 [messages]
+    # Message
     message-sent="<white>[<gradient:red:blue>YOU</gradient> <strikethrough>→</strikethrough> <gradient:blue:red><receiver></gradient>]</white>: <white><pre><message></pre></white>"
     message-received="<white>[<gradient:red:blue><sender></gradient> <strikethrough>→</strikethrough> <gradient:blue:red>YOU</gradient>]</white>: <white><pre><message></pre></white>"
+    # SocialSpy
     message-socialspy="<gradient:red:blue>SocialSpy: </gradient><white><sender> → <receiver>: <message>"
-
+    socialspy-enabled="<yellow>SocialSpy enabled.</yellow>"
+    socialspy-disabled="<yellow>SocialSpy disabled.</yellow>"
+    socialspy-toggle="<yellow>SocialSpy toggled [<true-or-false>]</yellow>" # <true-or-false> returns the value of "socialspy-toggle-true" or "socialspy-toggle-false" depending on the context.
+    socialspy-toggle-true="<green>✓</green>"
+    socialspy-toggle-false="<red>✕</red>"
 # Aliases:
 # Customise using a TOML string arrray.
 [aliases]
@@ -31,6 +37,8 @@
     # Reply
     reply-no-player-found="<red>Unable to reply.</red>"
     reply-usage="<red>Usage: /reply \\<message\\></red>"
+    # SocialSpy
+    socialspy-usage="<red>Usage: /socialspy <on|off|toggle></red>"
 
 [developer-info]
-    config-version=0.3
+    config-version=0.4

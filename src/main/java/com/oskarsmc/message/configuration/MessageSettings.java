@@ -4,6 +4,7 @@ import com.moandjiezana.toml.Toml;
 import com.oskarsmc.message.util.VersionUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.Template;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -16,17 +17,25 @@ public class MessageSettings {
     private final File dataFolder;
     private final File file;
 
-    private  String messageSentMiniMessage;
-    private  String messageReceivedMiniMessage;
-    private  String messageSocialSpyMiniMessage;
-    private  List<String> messageAlias;
-    private  List<String> replyAlias;
-    private  List<String> socialSpyAlias;
-    private  Component noPermissionComponent;
-    private  Component messagePlayerNotFoundComponent;
-    private  Component messageUsageComponent;
-    private  Component replyNoPlayerFoundComponent;
-    private  Component replyUsageComponent;
+    private String messageSentMiniMessage;
+    private String messageReceivedMiniMessage;
+    private String messageSocialSpyMiniMessage;
+
+    private List<String> messageAlias;
+    private List<String> replyAlias;
+    private List<String> socialSpyAlias;
+
+    private Component noPermissionComponent;
+    private Component messagePlayerNotFoundComponent;
+    private Component messageUsageComponent;
+    private Component replyNoPlayerFoundComponent;
+    private Component replyUsageComponent;
+    private Component socialSpyEnabled;
+    private Component socialSpyDisabled;
+    private Component socialSpyToggleTrue;
+    private Component socialSpyToggleFalse;
+    private Component socialSpyUsage;
+
 
     private final Double configVersion;
     private boolean enabled;
@@ -51,10 +60,16 @@ public class MessageSettings {
             return;
         }
 
-        // Messages
+        // Messages - Message
         this.messageSentMiniMessage = toml.getString("messages.message-sent");
         this.messageReceivedMiniMessage = toml.getString("messages.message-received");
         this.messageSocialSpyMiniMessage = toml.getString("messages.message-socialspy");
+
+        // Messages - SocialSpy
+        this.socialSpyEnabled = MiniMessage.get().parse(toml.getString("messages.socialspy-enabled"));
+        this.socialSpyDisabled = MiniMessage.get().parse(toml.getString("messages.socialspy-disabled"));
+        this.socialSpyToggleTrue = MiniMessage.get().parse(toml.getString("messages.socialspy-toggle"), Template.of("true-or-false", MiniMessage.get().parse(toml.getString("messages.socialspy-toggle-true"))));
+        this.socialSpyToggleFalse = MiniMessage.get().parse(toml.getString("messages.socialspy-toggle"), Template.of("true-or-false", MiniMessage.get().parse(toml.getString("messages.socialspy-toggle-false"))));
 
         // Aliases
         this.messageAlias = toml.getList("aliases.message");
@@ -71,6 +86,9 @@ public class MessageSettings {
         // Errors - Reply
         this.replyNoPlayerFoundComponent = MiniMessage.get().parse(toml.getString("error-messages.reply-no-player-found"));
         this.replyUsageComponent = MiniMessage.get().parse(toml.getString("error-messages.reply-usage"));
+
+        // Errors - SocialSpy
+        this.socialSpyUsage = MiniMessage.get().parse(toml.getString("error-messages.socialspy-usage"));
     }
 
     private void saveDefaultConfig() {
@@ -146,5 +164,25 @@ public class MessageSettings {
 
     public Component getReplyUsageComponent() {
         return replyUsageComponent;
+    }
+
+    public Component getSocialSpyEnabled() {
+        return socialSpyEnabled;
+    }
+
+    public Component getSocialSpyDisabled() {
+        return socialSpyDisabled;
+    }
+
+    public Component getSocialSpyToggleTrue() {
+        return socialSpyToggleTrue;
+    }
+
+    public Component getSocialSpyToggleFalse() {
+        return socialSpyToggleFalse;
+    }
+
+    public Component getSocialSpyUsage() {
+        return socialSpyUsage;
     }
 }
