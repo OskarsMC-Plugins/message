@@ -33,10 +33,10 @@
     no-permission="<red>You do not have permission to execute this command.</red>"
     # Message
     message-player-not-found="<red>That player was not found.</red>"
-    message-usage="<red>Usage: /message \\<player\\> \\<message\\></red>"
+    message-usage="<red>Usage: /message \\<player> \\<message></red>"
     # Reply
     reply-no-player-found="<red>Unable to reply.</red>"
-    reply-usage="<red>Usage: /reply \\<message\\></red>"
+    reply-usage="<red>Usage: /reply \\<message></red>"
     # SocialSpy
     socialspy-usage="<red>Usage: /socialspy <on|off|toggle></red>"
 
