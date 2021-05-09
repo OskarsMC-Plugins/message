@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ReplyBrigadier {
     public ConcurrentHashMap<Player, Player> playerConversations = new ConcurrentHashMap<Player, Player>();
 
-    public ReplyBrigadier(ProxyServer proxyServer, MessageSettings messageSettings) {
+    public ReplyBrigadier(ProxyServer proxyServer, MessageSettings messageSettings, MessageBrigadier messageBrigadier) {
         LiteralCommandNode<CommandSource> replyCommand = LiteralArgumentBuilder
                 .<CommandSource>literal("reply")
                 .executes(context -> {
@@ -40,7 +40,7 @@ public class ReplyBrigadier {
                             Player player = (Player) context.getSource();
 
                             if (playerConversations.containsKey(player)) {
-                                proxyServer.getEventManager().fire(new MessageEvent(player, playerConversations.get(player), context.getArgument("message", String.class)));
+                                proxyServer.getEventManager().fire(new MessageEvent(player, playerConversations.get(player), context.getArgument("message", String.class))).thenAccept((messageBrigadier::messageLogic));
                                 return 1;
                             } else {
                                 context.getSource().sendMessage(messageSettings.getReplyNoPlayerFoundComponent());

@@ -59,7 +59,7 @@ public class Message {
         if (messageSettings.isEnabled()) {
             this.messageBrigadier = new MessageBrigadier(this.proxyServer, this.messageSettings);
             this.socialSpyBrigadier = new SocialSpyBrigadier(this.proxyServer, this.messageSettings);
-            this.replyBrigadier = new ReplyBrigadier(this.proxyServer, this.messageSettings);
+            this.replyBrigadier = new ReplyBrigadier(this.proxyServer, this.messageSettings, this.messageBrigadier);
 
             this.proxyServer.getEventManager().register(this, this.messageBrigadier);
             this.proxyServer.getEventManager().register(this, this.socialSpyBrigadier);
