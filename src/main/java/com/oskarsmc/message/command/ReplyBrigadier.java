@@ -56,9 +56,9 @@ public class ReplyBrigadier {
 
         replyCommand.addChild(messageNode);
 
-        BrigadierCommand messageBrigadier = new BrigadierCommand(replyCommand);
+        BrigadierCommand replyBrigadier = new BrigadierCommand(replyCommand);
 
-        CommandMeta.Builder metaBuilder = proxyServer.getCommandManager().metaBuilder(messageBrigadier);
+        CommandMeta.Builder metaBuilder = proxyServer.getCommandManager().metaBuilder(replyBrigadier);
 
         for (String alias : messageSettings.getReplyAlias()) {
             metaBuilder.aliases(alias);
@@ -66,7 +66,7 @@ public class ReplyBrigadier {
 
         CommandMeta meta = metaBuilder.build();
 
-        proxyServer.getCommandManager().register(meta, messageBrigadier);
+        proxyServer.getCommandManager().register(meta, replyBrigadier);
     }
 
     @Subscribe
