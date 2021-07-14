@@ -6,6 +6,7 @@
 
     <groupId>com.oskarsmc</groupId>
     <artifactId>message</artifactId>
+    <url>https://software.oskarsmc.com/</url>
     <version>0.2.2</version>
     <packaging>jar</packaging>
 
