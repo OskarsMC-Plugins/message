@@ -8,8 +8,8 @@
 # Placeholders: <sender>, <receiver>, <message>
 [messages]
     # Message
-    message-sent="<white>[<gradient:red:blue>YOU</gradient> <strikethrough>→</strikethrough> <gradient:blue:red><receiver></gradient>]</white>: <white><pre><message></pre></white>"
-    message-received="<white>[<gradient:red:blue><sender></gradient> <strikethrough>→</strikethrough> <gradient:blue:red>YOU</gradient>]</white>: <white><pre><message></pre></white>"
+    message-sent="<white>[<gradient:red:blue>YOU</gradient> → <gradient:blue:red><receiver></gradient>]</white>: <white><pre><message></pre></white>"
+    message-received="<white>[<gradient:red:blue><sender></gradient> → <gradient:blue:red>YOU</gradient>]</white>: <white><pre><message></pre></white>"
     # SocialSpy
     message-socialspy="<gradient:red:blue>SocialSpy: </gradient><white><sender> → <receiver>: <message>"
     socialspy-enabled="<yellow>SocialSpy enabled.</yellow>"
