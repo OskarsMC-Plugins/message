@@ -17,7 +17,6 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <url>https://software.oskarsmc.com/</url>
 
     <profiles>
         <profile>
@@ -161,6 +160,14 @@
         </plugins>
     </reporting>
 
+    <distributionManagement>
+        <repository>
+            <id>oskarsmc-repo-releases</id>
+            <name>OskarsMC Repository</name>
+            <url>https://repository.oskarsmc.com/releases</url>
+        </repository>
+    </distributionManagement>
+    
     <repositories>
         <repository>
             <id>velocitypowered-repo</id>
