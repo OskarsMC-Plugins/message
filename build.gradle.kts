@@ -1,11 +1,14 @@
 plugins {
     java
     id("com.github.johnrengelman.shadow") version "7.1.0"
+    `maven-publish`
 }
 
 group = "com.oskarsmc"
-System.getenv("GRADLE_RELEASE")
-version = "1.0.0-SNAPSHOT"
+version = "1.0.0"
+if (!System.getenv("GRADLE_RELEASE").equals("true", ignoreCase = true)) {
+    version = "$version-SNAPSHOT"
+}
 
 repositories {
     mavenCentral()
@@ -56,4 +59,32 @@ val jar by tasks.getting(Jar::class) {
         attributes["Implementation-Version"] = project.version
         attributes["Implementation-Vendor"] = "OskarsMC"
     }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = project.group as String?
+            artifactId = project.name
+            version = project.version as String?
+
+            from(components["java"])
+        }
+    }
+    repositories {
+        maven {
+            val releasesRepoUrl = uri("https://repository.oskarsmc.com/releases")
+            val snapshotsRepoUrl = uri("https://repository.oskarsmc.com/snapshots")
+            url = if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
+            credentials {
+                username = System.getenv("MAVEN_USERNAME")
+                password = System.getenv("MAVEN_SECRET")
+            }
+        }
+    }
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
