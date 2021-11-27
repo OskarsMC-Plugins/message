@@ -2,7 +2,7 @@
   "id": "message",
   "name": "Message",
   "version": "${project.version}",
-  "description": "",
+  "description": "Cross-Server Messaging Platform for Velocity with API and LuckPerms integration.",
   "url": "https://software.oskarsmc.com/plugins/velocity/message/",
   "authors": [
     "OskarsMC",
