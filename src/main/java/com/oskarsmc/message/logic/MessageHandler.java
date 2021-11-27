@@ -34,7 +34,7 @@ public final class MessageHandler {
     /**
      * Conversation Watchers
      */
-    public final List<CommandSource> conversationWatchers = new ArrayList<>();
+    public final List<CommandSource> conversationWatchers = Collections.synchronizedList(new ArrayList<>());
 
     /**
      * Construct the Message Handler.
