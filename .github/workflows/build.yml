@@ -22,6 +22,9 @@ jobs:
 
       - name: Build with gradle
         run: ./gradlew clean build publish # Build
+        env:
+          MAVEN_USERNAME: ${{ SECRETS.MAVEN_USERNAME }}
+          MAVEN_SECRET: ${{ SECRETS.MAVEN_SECRET }}
 
       # Clean Gradle Cache
       - name: Cleanup Gradle Cache
