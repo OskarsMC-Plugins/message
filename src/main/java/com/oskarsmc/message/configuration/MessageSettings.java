@@ -1,19 +1,22 @@
 package com.oskarsmc.message.configuration;
 
+import com.google.inject.Inject;
 import com.moandjiezana.toml.Toml;
 import com.oskarsmc.message.util.VersionUtils;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.Template;
+import com.velocitypowered.api.plugin.annotation.DataDirectory;
+import org.checkerframework.dataflow.qual.Pure;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
-public class MessageSettings {
+public final class MessageSettings {
     private final File dataFolder;
     private final File file;
 
@@ -25,23 +28,14 @@ public class MessageSettings {
     private List<String> replyAlias;
     private List<String> socialSpyAlias;
 
-    private Component noPermissionComponent;
-    private Component messagePlayerNotFoundComponent;
-    private Component messageUsageComponent;
-    private Component replyNoPlayerFoundComponent;
-    private Component replyUsageComponent;
-    private Component socialSpyEnabled;
-    private Component socialSpyDisabled;
-    private Component socialSpyToggleTrue;
-    private Component socialSpyToggleFalse;
-    private Component socialSpyUsage;
-
+    private boolean luckpermsIntegration;
 
     private final Double configVersion;
     private boolean enabled;
 
-    public MessageSettings(File dataFolder, Logger logger) {
-        this.dataFolder = dataFolder;
+    @Inject
+    public MessageSettings(@DataDirectory @NotNull Path dataFolder, Logger logger) {
+        this.dataFolder = dataFolder.toFile();
         this.file = new File(this.dataFolder, "config.toml");
 
         saveDefaultConfig();
@@ -53,136 +47,93 @@ public class MessageSettings {
         this.configVersion = toml.getDouble("developer-info.config-version");
 
         if (!VersionUtils.isLatestConfigVersion(this)) {
-            logger.warn("Your Config is out of date (Latest: " + VersionUtils.CONFIG_VERSION + ", Config Version: " + this.getConfigVersion() + ")!");
+            logger.warn("Your Config is out of date (Latest: " + VersionUtils.CONFIG_VERSION + ", Config Version: " + this.configVersion() + ")!");
             logger.warn("Please backup your current config.toml, and delete the current one. A new config will then be created on the next proxy launch.");
             logger.warn("The plugin's functionality will not be enabled until the config is updated.");
-            this.setEnabled(false);
+            this.enabled(false);
             return;
         }
+
+        // Plugin Features
+        this.luckpermsIntegration = toml.getBoolean("plugin.luckperms-integration");
 
         // Messages - Message
         this.messageSentMiniMessage = toml.getString("messages.message-sent");
         this.messageReceivedMiniMessage = toml.getString("messages.message-received");
         this.messageSocialSpyMiniMessage = toml.getString("messages.message-socialspy");
 
-        // Messages - SocialSpy
-        this.socialSpyEnabled = MiniMessage.get().parse(toml.getString("messages.socialspy-enabled"));
-        this.socialSpyDisabled = MiniMessage.get().parse(toml.getString("messages.socialspy-disabled"));
-        this.socialSpyToggleTrue = MiniMessage.get().parse(toml.getString("messages.socialspy-toggle"), Template.of("true-or-false", MiniMessage.get().parse(toml.getString("messages.socialspy-toggle-true"))));
-        this.socialSpyToggleFalse = MiniMessage.get().parse(toml.getString("messages.socialspy-toggle"), Template.of("true-or-false", MiniMessage.get().parse(toml.getString("messages.socialspy-toggle-false"))));
-
         // Aliases
         this.messageAlias = toml.getList("aliases.message");
         this.replyAlias = toml.getList("aliases.reply");
         this.socialSpyAlias = toml.getList("aliases.socialspy");
-
-        // Errors - General
-        this.noPermissionComponent = MiniMessage.get().parse(toml.getString("error-messages.no-permission"));
-
-        // Errors - Message
-        this.messagePlayerNotFoundComponent = MiniMessage.get().parse(toml.getString("error-messages.message-player-not-found"));
-        this.messageUsageComponent = MiniMessage.get().parse(toml.getString("error-messages.message-usage"));
-
-        // Errors - Reply
-        this.replyNoPlayerFoundComponent = MiniMessage.get().parse(toml.getString("error-messages.reply-no-player-found"));
-        this.replyUsageComponent = MiniMessage.get().parse(toml.getString("error-messages.reply-usage"));
-
-        // Errors - SocialSpy
-        this.socialSpyUsage = MiniMessage.get().parse(toml.getString("error-messages.socialspy-usage"));
     }
 
     private void saveDefaultConfig() {
-        if (!dataFolder.exists()) dataFolder.mkdir();
+        //noinspection ResultOfMethodCallIgnored
+        dataFolder.mkdir();
         if (file.exists()) return;
 
         try (InputStream in = MessageSettings.class.getResourceAsStream("/config.toml")) {
+            assert in != null;
             Files.copy(in, file.toPath());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private File getConfigFile() {
+    @Contract(" -> new")
+    private @NotNull File configFile() {
         return new File(dataFolder, "config.toml");
     }
 
     private Toml loadConfig() {
-        return new Toml().read(getConfigFile());
+        return new Toml().read(configFile());
     }
 
-    public String getMessageSentMiniMessage() {
+    public String messageSentMiniMessage() {
         return messageSentMiniMessage;
     }
 
-    public String getMessageReceivedMiniMessage() {
+    public String messageReceivedMiniMessage() {
         return messageReceivedMiniMessage;
     }
 
-    public boolean isEnabled() {
+    @Pure
+    public boolean enabled() {
         return enabled;
     }
 
-    public void setEnabled(boolean enabled) {
+    public void enabled(boolean enabled) {
  this.enabled = enabled;
     }
 
-    public Double getConfigVersion() {
+    @Pure
+    public boolean luckpermsIntegration() { return luckpermsIntegration; }
+
+    public void luckpermsIntegration(boolean luckpermsIntegration) { this.luckpermsIntegration = luckpermsIntegration; }
+
+    @Pure
+    public Double configVersion() {
         return configVersion;
     }
 
-    public String getMessageSocialSpyMiniMessage() {
+    @Pure
+    public String messageSocialSpyMiniMessage() {
         return messageSocialSpyMiniMessage;
     }
 
-    public List<String> getMessageAlias() {
+    @Pure
+    public List<String> messageAliases() {
         return messageAlias;
     }
 
-    public List<String> getSocialSpyAlias() {
+    @Pure
+    public List<String> socialSpyAliases() {
         return socialSpyAlias;
     }
 
-    public List<String> getReplyAlias() {
+    @Pure
+    public List<String> replyAliases() {
         return replyAlias;
-    }
-
-    public Component getNoPermissionComponent() {
-        return noPermissionComponent;
-    }
-
-    public Component getMessagePlayerNotFoundComponent() {
-        return messagePlayerNotFoundComponent;
-    }
-
-    public Component getReplyNoPlayerFoundComponent() {
-        return replyNoPlayerFoundComponent;
-    }
-
-    public Component getMessageUsageComponent() {
-        return messageUsageComponent;
-    }
-
-    public Component getReplyUsageComponent() {
-        return replyUsageComponent;
-    }
-
-    public Component getSocialSpyEnabled() {
-        return socialSpyEnabled;
-    }
-
-    public Component getSocialSpyDisabled() {
-        return socialSpyDisabled;
-    }
-
-    public Component getSocialSpyToggleTrue() {
-        return socialSpyToggleTrue;
-    }
-
-    public Component getSocialSpyToggleFalse() {
-        return socialSpyToggleFalse;
-    }
-
-    public Component getSocialSpyUsage() {
-        return socialSpyUsage;
     }
 }

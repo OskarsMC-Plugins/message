@@ -1,0 +1,26 @@
+{
+  "translation-version": "${project.version}",
+  "translations": [
+    {
+      "language-tag": "en-US",
+      "translations": [
+        {
+          "key": "oskarsmc.message.command.message.argument.player-argument",
+          "value": "The player to send the message to."
+        },
+        {
+          "key": "oskarsmc.message.command.common.argument.message-description",
+          "value": "The message to send to the player."
+        },
+        {
+          "key": "oskarsmc.message.command.socialspy.on",
+          "value": "SocialSpy enabled."
+        },
+        {
+          "key": "oskarsmc.message.command.socialspy.off",
+          "value": "SocialSpy disabled."
+        }
+      ]
+    }
+  ]
+}

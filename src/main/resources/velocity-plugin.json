@@ -2,8 +2,8 @@
   "id": "message",
   "name": "Message",
   "version": "${project.version}",
-  "description": "${project.description}",
-  "url": "${project.url}",
+  "description": "",
+  "url": "https://software.oskarsmc.com/plugins/velocity/message/",
   "authors": [
     "OskarsMC",
     "OskarZyg"
