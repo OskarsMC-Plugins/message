@@ -16,7 +16,14 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+/**
+ * The translation manager in charge of registering translations.
+ */
 public final class TranslationManager {
+    /**
+     * Construct the translation manager.
+     * @param logger Logger
+     */
     @Inject
     public TranslationManager(@NotNull Logger logger) {
         logger.info("Loading Translations...");
@@ -38,6 +45,10 @@ public final class TranslationManager {
         GlobalTranslator.get().addSource(translationRegistry);
     }
 
+    /**
+     * Reads the translation file and maps it to an {@link TranslationFile} instance.
+     * @return The mapped {@link TranslationFile} instance.
+     */
     public static @Nullable TranslationFile readTranslationFile() {
         try (Reader reader = new InputStreamReader(Objects.requireNonNull(TranslationManager.class.getResourceAsStream("/translations.json")))) {
             return new Gson().fromJson(reader, TranslationFile.class);

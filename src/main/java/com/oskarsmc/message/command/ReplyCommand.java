@@ -16,7 +16,17 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
+/**
+ * Reply Command
+ */
 public final class ReplyCommand {
+    /**
+     * Construct the reply command
+     * @param messageSettings Message Settings
+     * @param commandManager Command Manager
+     * @param proxyServer Proxy Server
+     * @param messageHandler Message Handler.
+     */
     @Inject
     public ReplyCommand(@NotNull MessageSettings messageSettings, @NotNull VelocityCommandManager<CommandSource> commandManager, ProxyServer proxyServer, MessageHandler messageHandler) {
         Command.Builder<CommandSource> builder = commandManager.commandBuilder("reply", messageSettings.replyAliases().toArray(new String[0]));

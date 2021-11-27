@@ -15,7 +15,17 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * The message command class.
+ */
 public final class MessageCommand {
+    /**
+     * Construct the message command.
+     * @param messageSettings Message Settings
+     * @param commandManager Command Manager
+     * @param proxyServer Proxy Server
+     * @param messageHandler Message Handler
+     */
     @Inject
     public MessageCommand(@NotNull MessageSettings messageSettings, @NotNull VelocityCommandManager<CommandSource> commandManager, ProxyServer proxyServer, MessageHandler messageHandler) {
         Command.Builder<CommandSource> builder = commandManager.commandBuilder("message", messageSettings.messageAliases().toArray(new String[0]));

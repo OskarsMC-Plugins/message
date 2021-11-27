@@ -12,9 +12,18 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Metrics for message.
+ */
 public final class MessageMetrics {
     private final AtomicInteger messagesSent = new AtomicInteger();
 
+    /**
+     * Initialise BStats Metrics
+     * @param plugin Message Plugin
+     * @param metricsFactory Metrics Factory
+     * @param proxyServer Proxy Server
+     */
     @Inject
     public MessageMetrics(Message plugin, Metrics.@NotNull Factory metricsFactory, @NotNull ProxyServer proxyServer) {
         proxyServer.getEventManager().register(plugin, this);

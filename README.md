@@ -1,5 +1,5 @@
 # message
-Cross Server Messaging Platform for Velocity
+Cross-Server Messaging Platform for Velocity with API and LuckPerms integration.
 
 ## Commands
 
@@ -95,64 +95,88 @@ Cross Server Messaging Platform for Velocity
 # Plugin Settings
 [plugin]
     enabled=true
+    luckperms-integration=true # If luckperms is found, use luckperms prefixes and suffixes.
+    allow-self-message-sending=true # Allow a player to send messages to themselves.
 
-# Messages:
-# Customise using MiniMessage
-# Link: https://docs.adventure.kyori.net/minimessage.html#format
-# Placeholders: <sender>, <receiver>, <message>
+# Customise messages using MiniMessage
+# Documentation: https://docs.adventure.kyori.net/minimessage.html#format or https://webui.adventure.kyori.net/
+# Default Placeholders: <sender>, <sender_prefix>, <sender_suffix>, <sender_group>, <receiver>, <receiver_prefix>, <receiver_suffix>, <receiver_group>, <message>
+# Preview: https://webui.adventure.kyori.net/?mode=chat_closed&input=%3Cwhite%3E%5B%3Ccolor%3A%23FFCE45%3EYOU%3C%2Fcolor%3E%20%E2%86%92%20%3Ccolor%3A%23D4AC2B%3E%3Creceiver_prefix%3E%3Creceiver%3E%3Creceiver_suffix%3E%3C%2Fcolor%3E%5D%20%3Cmessage%3E%3C%2Fwhite%3E%0A%3Cwhite%3E%5B%3Ccolor%3A%23FFCE45%3E%3Csender_prefix%3E%3Csender%3E%3Csender_suffix%3E%3C%2Fcolor%3E%20%E2%86%92%20%3Ccolor%3A%23D4AC2B%3EYOU%3C%2Fcolor%3E%5D%20%3Cmessage%3E%3C%2Fwhite%3E%0A%3Cgradient%3Aaqua%3Ablue%3E%5BSocialSpy%5D%20%3C%2Fgradient%3E%5B%3Cwhite%3E%3Csender%3E%20%E2%86%92%20%3Creceiver%3E%5D%3A%20%3Cmessage%3E&st=%7B%22sender%22%3A%22Player1%22%2C%22receiver%22%3A%22Player2%22%2C%22message%22%3A%22Hello%2C%20World!%22%2C%22receiver_prefix%22%3A%22Admin%20%22%2C%22receiver_suffix%22%3A%22%20%5BLevel%201%5D%22%2C%22sender_prefix%22%3A%22Moderator%20%22%2C%22sender_suffix%22%3A%22%20%5BLevel%200%5D%22%7D
 [messages]
-    # Message
-    message-sent="<white>[<gradient:red:blue>YOU</gradient> <strikethrough>→</strikethrough> <gradient:blue:red><receiver></gradient>]</white>: <white><pre><message></pre></white>"
-    message-received="<white>[<gradient:red:blue><sender></gradient> <strikethrough>→</strikethrough> <gradient:blue:red>YOU</gradient>]</white>: <white><pre><message></pre></white>"
-    # SocialSpy
-    message-socialspy="<gradient:red:blue>SocialSpy: </gradient><white><sender> → <receiver>: <message>"
-    socialspy-enabled="<yellow>SocialSpy enabled.</yellow>"
-    socialspy-disabled="<yellow>SocialSpy disabled.</yellow>"
-    socialspy-toggle="<yellow>SocialSpy toggled [<true-or-false>]</yellow>" # <true-or-false> returns the value of "socialspy-toggle-true" or "socialspy-toggle-false" depending on the context.
-    socialspy-toggle-true="<green>✓</green>"
-    socialspy-toggle-false="<red>✕</red>"
+    message-sent="<white>[<color:#FFCE45>YOU</color> → <color:#D4AC2B><receiver_prefix><receiver><receiver_suffix></color>] <message></white>"
+    message-received="<white>[<color:#FFCE45><sender_prefix><sender><sender_suffix></color> → <color:#D4AC2B>YOU</color>] <message></white>"
+    message-socialspy="<gradient:aqua:blue>[SocialSpy] </gradient>[<white><sender> → <receiver>]: <message>"
+
 # Aliases:
-# Customise using a TOML string arrray.
+# Customise using a TOML string array.
 [aliases]
     message=["msg", "tell"]
     reply=["r"]
     socialspy=["ss"]
 
-# Error messages:
-# Customise using MiniMessage
-# Link: https://docs.adventure.kyori.net/minimessage.html#format
-# Placeholders: None
-[error-messages]
-    # General
-    no-permission="<red>You do not have permission to execute this command.</red>"
-    # Message
-    message-player-not-found="<red>That player was not found.</red>"
-    message-usage="<red>Usage: /message \\<player> \\<message></red>"
-    # Reply
-    reply-no-player-found="<red>Unable to reply.</red>"
-    reply-usage="<red>Usage: /reply \\<message></red>"
-    # SocialSpy
-    socialspy-usage="<red>Usage: /socialspy <on|off|toggle></red>"
-
+# Please don't touch this
 [developer-info]
-    config-version=0.4
+    config-version=1.0
 ```
-### Default:
-<img src="https://i.imgur.com/H51JW09.png">
-<br>
-<img src="https://i.imgur.com/yZxbinH.png">
-<br>
-<img src="https://i.imgur.com/m2f6E3Z.png">
-<br>
-<img src="https://i.imgur.com/jMPI9KO.png">
+Preview these values <a href="https://webui.adventure.kyori.net/?mode=chat_closed&input=%3Cwhite%3E%5B%3Ccolor%3A%23FFCE45%3EYOU%3C%2Fcolor%3E%20%E2%86%92%20%3Ccolor%3A%23D4AC2B%3E%3Creceiver_prefix%3E%3Creceiver%3E%3Creceiver_suffix%3E%3C%2Fcolor%3E%5D%20%3Cmessage%3E%3C%2Fwhite%3E%0A%3Cwhite%3E%5B%3Ccolor%3A%23FFCE45%3E%3Csender_prefix%3E%3Csender%3E%3Csender_suffix%3E%3C%2Fcolor%3E%20%E2%86%92%20%3Ccolor%3A%23D4AC2B%3EYOU%3C%2Fcolor%3E%5D%20%3Cmessage%3E%3C%2Fwhite%3E%0A%3Cgradient%3Aaqua%3Ablue%3E%5BSocialSpy%5D%20%3C%2Fgradient%3E%5B%3Cwhite%3E%3Csender%3E%20%E2%86%92%20%3Creceiver%3E%5D%3A%20%3Cmessage%3E&st=%7B%22sender%22%3A%22Player1%22%2C%22receiver%22%3A%22Player2%22%2C%22message%22%3A%22Hello%2C%20World!%22%2C%22receiver_prefix%22%3A%22Admin%20%22%2C%22receiver_suffix%22%3A%22%20%5BLevel%201%5D%22%2C%22sender_prefix%22%3A%22Moderator%20%22%2C%22sender_suffix%22%3A%22%20%5BLevel%200%5D%22%7D">here</a>.
 
 ### Don't understand X? Take a look at some docs:
 * <a href="https://docs.adventure.kyori.net/minimessage.html#the-components">MiniMessage: The Components</a>
 * <a href="https://docs.adventure.kyori.net/minimessage.html#placeholder">MiniMessage: Placeholders</a>
 
+## API
+### Including:
+####Maven:
+```xml
+<repository>
+    <id>oskarsmc-repo</id>
+    <url>https://repository.oskarsmc.com/releases</url>
+</repository>
+```
+ ```xml
+<dependency>
+  <groupId>com.oskarsmc</groupId>
+  <artifactId>message</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```
+####Gradle Kotlin DSL:
+```kotlin
+maven("https:/repository.oskarsmc.com/releases")
+```
+```kotlin
+implementation("com.oskarsmc:message:1.0.0")
+```
+### Usage:
+#### JavaDocs
+Javadocs are not published anywhere yet. A javadoc jar is published alongside each artifact.
+#### Example
+```java
+import com.google.inject.Inject;
+import com.oskarsmc.message.event.MessageEvent;
+import com.velocitypowered.api.event.ResultedEvent;
+import com.velocitypowered.api.event.Subscribe;
+import com.velocitypowered.api.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+
+@Plugin(
+        id = "testvelocityplugin",
+        name = "TestVelocityPlugin",
+        version = "1.0.0"
+)
+public class TestVelocityPlugin {
+    @Subscribe
+    private void MessageEvent(@NotNull MessageEvent event) {
+        if (event.message().contains("poop")) { // Check if message contains a very naughty word.
+            event.setResult(ResultedEvent.GenericResult.denied()); // Don't send naughty words to people.
+        }
+    }
+}
+```
+
 ## Credits:
-* <a href="https://github.com/VelocityPowered/">@VelocityPowered</a>
+* <a href="https://github.com/PaperMC/">@PaperMC</a>
 * <a href="https://github.com/KyoriPowered">@KyoriPowered</a>
 
 ## Download:
-https://github.com/OskarsMC-Plugins/message/releases/tag/0.2.2
+https://github.com/OskarsMC-Plugins/message/releases/

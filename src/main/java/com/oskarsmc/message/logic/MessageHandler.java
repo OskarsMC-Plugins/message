@@ -24,22 +24,36 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * The handler that handles all messages sent via the plugin.
+ */
 public final class MessageHandler {
     private final MessageSettings messageSettings;
     private final MiniMessage miniMessage = MiniMessage.get();
     private final ConcurrentHashMap<Player, Player> conversations = new ConcurrentHashMap<>();
+    /**
+     * Conversation Watchers
+     */
     public final List<CommandSource> conversationWatchers = new ArrayList<>();
 
+    /**
+     * Construct the Message Handler.
+     * @param messageSettings Message Settings
+     */
     public MessageHandler(MessageSettings messageSettings) {
         this.messageSettings = messageSettings;
     }
 
+    /**
+     * Handle the message event once it's been fired.
+     * @param event The Message Event instance.
+     */
     public void handleMessageEvent(@NotNull MessageEvent event) {
         if (messageSettings.selfMessageSending() && event.sender() == event.recipient()) {
             event.sender().sendMessage(Component.translatable("oskarsmc.message.command.common.self-sending-error", NamedTextColor.RED));
             return;
         }
-        
+
         if (event.getResult().isAllowed()) {
             Component senderName = Component.text("UNKNOWN");
             Component receiverName = Component.text(event.recipient().getUsername());
@@ -107,6 +121,10 @@ public final class MessageHandler {
         return templates;
     }
 
+    /**
+     * Get all current conversations.
+     * @return An unmodifiable map with all conversations.
+     */
     public @NotNull @UnmodifiableView Map<Player, Player> conversations() {
         return Collections.unmodifiableMap(conversations);
     }

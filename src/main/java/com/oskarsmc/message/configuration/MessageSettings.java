@@ -16,6 +16,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+/**
+ * The settings container class for the message plugin.
+ */
 public final class MessageSettings {
     private final File dataFolder;
     private final File file;
@@ -34,6 +37,11 @@ public final class MessageSettings {
     private final Double configVersion;
     private boolean enabled;
 
+    /**
+     * Construct message settings.
+     * @param dataFolder Data Folder
+     * @param logger Logger
+     */
     @Inject
     public MessageSettings(@DataDirectory @NotNull Path dataFolder, Logger logger) {
         this.dataFolder = dataFolder.toFile();
@@ -43,7 +51,7 @@ public final class MessageSettings {
         Toml toml = loadConfig();
 
         this.enabled = toml.getBoolean("plugin.enabled");
-        
+
         // Version
         this.configVersion = toml.getDouble("developer-info.config-version");
 
@@ -92,51 +100,116 @@ public final class MessageSettings {
         return new Toml().read(configFile());
     }
 
+    /**
+     * Get the MiniMessage markup of the senders sent message.
+     *
+     * @return The MiniMessage markup of the senders sent message.
+     */
     public String messageSentMiniMessage() {
         return messageSentMiniMessage;
     }
 
+    /**
+     * Get the MiniMessage markup of the recipients received message.
+     *
+     * @return The MiniMessage markup of the recipients received message.
+     */
     public String messageReceivedMiniMessage() {
         return messageReceivedMiniMessage;
     }
 
+    /**
+     * Get if the plugin is enabled.
+     * @return If the plugin is enabled.
+     */
     @Pure
     public boolean enabled() {
         return enabled;
     }
 
+    /**
+     * Set if the plugin is enabled.
+     *
+     * @param enabled If the plugin is enabled.
+     */
     public void enabled(boolean enabled) {
- this.enabled = enabled;
+        this.enabled = enabled;
     }
 
+    /**
+     * Get luckperms integration.
+     *
+     * @return Luckperms integration.
+     */
     @Pure
-    public boolean luckpermsIntegration() { return luckpermsIntegration; }
+    public boolean luckpermsIntegration() {
+        return luckpermsIntegration;
+    }
 
-    public void luckpermsIntegration(boolean luckpermsIntegration) { this.luckpermsIntegration = luckpermsIntegration; }
+    /**
+     * Set luckperms integration.
+     *
+     * @param luckpermsIntegration Luckperms integration
+     */
+    public void luckpermsIntegration(boolean luckpermsIntegration) {
+        this.luckpermsIntegration = luckpermsIntegration;
+    }
 
+    /**
+     * Get if the config allows players sending messages to themselves.
+     *
+     * @return If the config allows players sending messages to themselves.
+     */
     @Pure
-    public boolean selfMessageSending() { return selfMessageSending; }
+    public boolean selfMessageSending() {
+        return selfMessageSending;
+    }
 
+    /**
+     * Get the configuration version.
+     *
+     * @return The configuration version.
+     */
     @Pure
     public Double configVersion() {
         return configVersion;
     }
 
+    /**
+     * Get the MiniMessage markup of the socialspy message.
+     *
+     * @return The MiniMessage markup of the socialspy message.
+     */
     @Pure
     public String messageSocialSpyMiniMessage() {
         return messageSocialSpyMiniMessage;
     }
 
+    /**
+     * Get the aliases of the message command.
+     *
+     * @return The aliases of the message command.
+     */
     @Pure
     public List<String> messageAliases() {
         return messageAlias;
     }
 
+    /**
+     * Get the aliases of the socialspy command.
+     *
+     * @return The aliases of the socialspy command.
+     */
     @Pure
     public List<String> socialSpyAliases() {
         return socialSpyAlias;
     }
 
+    /**
+     * Get the aliases of the reply command.
+     *
+     * @return The aliases of the reply command.
+     */
     @Pure
     public List<String> replyAliases() {
         return replyAlias;

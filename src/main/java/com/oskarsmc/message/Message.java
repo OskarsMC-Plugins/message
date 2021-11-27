@@ -24,6 +24,9 @@ import org.slf4j.Logger;
 
 import java.util.function.Function;
 
+/**
+ * The main class for the message plugin.
+ */
 public final class Message {
     @Inject
     private Injector injector;
@@ -31,6 +34,10 @@ public final class Message {
     @Inject
     private Logger logger;
 
+    /**
+     * Initialise the plugin.
+     * @param event Proxy Initialise Event
+     */
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
         MessageSettings messageSettings = injector.getInstance(MessageSettings.class);

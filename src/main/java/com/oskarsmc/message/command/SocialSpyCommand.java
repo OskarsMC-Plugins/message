@@ -9,10 +9,18 @@ import com.velocitypowered.api.command.CommandSource;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Social Spy command
+ */
 public final class SocialSpyCommand {
     @Inject
     private MessageHandler messageHandler;
 
+    /**
+     * Construct the social spy command.
+     * @param messageSettings Message Settings
+     * @param commandManager Command Manager
+     */
     @Inject
     public SocialSpyCommand(@NotNull MessageSettings messageSettings, @NotNull VelocityCommandManager<CommandSource> commandManager) {
         Command.Builder<CommandSource> builder = commandManager.commandBuilder("socialspy", messageSettings.socialSpyAliases().toArray(new String[0])).permission("osmc.message.socialspy");

@@ -8,6 +8,9 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Lowercase Cloud Suggestion Processor
+ */
 public final class CloudSuggestionProcessor implements CommandSuggestionProcessor<CommandSource> {
 
     @Override
