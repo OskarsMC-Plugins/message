@@ -19,6 +19,10 @@
         {
           "key": "oskarsmc.message.command.socialspy.off",
           "value": "SocialSpy disabled."
+        },
+        {
+          "key": "oskarsmc.message.command.common.self-sending-error",
+          "value": "You cannot send messages to yourself."
         }
       ]
     }

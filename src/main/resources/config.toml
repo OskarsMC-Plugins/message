@@ -2,6 +2,7 @@
 [plugin]
     enabled=true
     luckperms-integration=true # If luckperms is found, use luckperms prefixes and suffixes.
+    allow-self-message-sending=true # Allow a player to send messages to themselves.
 
 # Customise messages using MiniMessage
 # Documentation: https://docs.adventure.kyori.net/minimessage.html#format or https://webui.adventure.kyori.net/

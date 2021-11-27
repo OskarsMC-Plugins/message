@@ -5,6 +5,7 @@ import com.oskarsmc.message.event.MessageEvent;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.Template;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -34,6 +35,11 @@ public final class MessageHandler {
     }
 
     public void handleMessageEvent(@NotNull MessageEvent event) {
+        if (messageSettings.selfMessageSending() && event.sender() == event.recipient()) {
+            event.sender().sendMessage(Component.translatable("oskarsmc.message.command.common.self-sending-error", NamedTextColor.RED));
+            return;
+        }
+        
         if (event.getResult().isAllowed()) {
             Component senderName = Component.text("UNKNOWN");
             Component receiverName = Component.text(event.recipient().getUsername());

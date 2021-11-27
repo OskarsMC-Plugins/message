@@ -29,6 +29,7 @@ public final class MessageSettings {
     private List<String> socialSpyAlias;
 
     private boolean luckpermsIntegration;
+    private boolean selfMessageSending;
 
     private final Double configVersion;
     private boolean enabled;
@@ -56,6 +57,7 @@ public final class MessageSettings {
 
         // Plugin Features
         this.luckpermsIntegration = toml.getBoolean("plugin.luckperms-integration");
+        this.selfMessageSending = toml.getBoolean("plugin.allow-self-message-sending");
 
         // Messages - Message
         this.messageSentMiniMessage = toml.getString("messages.message-sent");
@@ -111,6 +113,9 @@ public final class MessageSettings {
     public boolean luckpermsIntegration() { return luckpermsIntegration; }
 
     public void luckpermsIntegration(boolean luckpermsIntegration) { this.luckpermsIntegration = luckpermsIntegration; }
+
+    @Pure
+    public boolean selfMessageSending() { return selfMessageSending; }
 
     @Pure
     public Double configVersion() {
