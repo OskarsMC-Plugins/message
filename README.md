@@ -126,7 +126,7 @@ Preview these values <a href="https://webui.adventure.kyori.net/?mode=chat_close
 
 ## API
 ### Including:
-####Maven:
+#### Maven:
 ```xml
 <repository>
     <id>oskarsmc-repo</id>
@@ -140,7 +140,7 @@ Preview these values <a href="https://webui.adventure.kyori.net/?mode=chat_close
   <version>1.0.0</version>
 </dependency>
 ```
-####Gradle Kotlin DSL:
+#### Gradle Kotlin DSL:
 ```kotlin
 maven("https:/repository.oskarsmc.com/releases")
 ```
