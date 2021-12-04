@@ -132,6 +132,14 @@ Preview these values <a href="https://webui.adventure.kyori.net/?mode=chat_close
 - <a href="https://docs.adventure.kyori.net/minimessage.html#the-components">MiniMessage: The Components</a>
 - <a href="https://docs.adventure.kyori.net/minimessage.html#placeholder">MiniMessage: Placeholders</a>
 
+## Technical Details:
+
+### Java
+
+Recommended Version: 17
+
+Tested Versions: 16, 17
+
 ## API
 
 ### Including:
