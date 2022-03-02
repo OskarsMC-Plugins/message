@@ -25,6 +25,31 @@
           "value": "You cannot send messages to yourself."
         }
       ]
+    },
+    {
+      "language-tag": "es-ES",
+      "translations": [
+        {
+          "key": "oskarsmc.message.command.message.argument.player-argument",
+          "value": "El jugador al cual enviar el mensaje."
+        },
+        {
+          "key": "oskarsmc.message.command.common.argument.message-description",
+          "value": "El mensaje que se enviara al jugador."
+        },
+        {
+          "key": "oskarsmc.message.command.socialspy.on",
+          "value": "SocialSpy habilitado."
+        },
+        {
+          "key": "oskarsmc.message.command.socialspy.off",
+          "value": "SocialSpy deshabilitado."
+        },
+        {
+          "key": "oskarsmc.message.command.common.self-sending-error",
+          "value": "No puedes enviarte mensajes a ti mismo."
+        }
+      ]
     }
   ]
 }
