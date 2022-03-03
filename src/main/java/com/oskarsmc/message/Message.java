@@ -57,7 +57,7 @@ public final class Message {
         if (messageSettings.enabled()) {
             if (messageSettings.luckpermsIntegration()) {
                 if (DependencyChecker.luckperms()) {
-                    logger.info("LuckPerms integration enabled. Targeted LuckPerms version 5.3, using " + LuckPermsProvider.get().getPluginMetadata().getVersion());
+                    logger.info("LuckPerms integration enabled. Targeted LuckPerms version 5.3, using {}", LuckPermsProvider.get().getPluginMetadata().getVersion());
                 } else {
                     logger.warn("LuckPerms integration was enabled but LuckPerms was not detected on the proxy. Continuing without it.");
                     messageSettings.luckpermsIntegration(false);
@@ -77,6 +77,6 @@ public final class Message {
             injector.getInstance(MessageMetrics.class);
         }
 
-        logger.info("Loaded message " + getClass().getPackage().getImplementationVersion());
+        logger.info("Loaded message {}", getClass().getPackage().getImplementationVersion());
     }
 }

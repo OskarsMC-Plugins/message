@@ -7,6 +7,7 @@ import net.kyori.adventure.translation.GlobalTranslator;
 import net.kyori.adventure.translation.TranslationRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,7 +15,6 @@ import java.io.Reader;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 /**
  * The translation manager in charge of registering translations.
@@ -37,9 +37,9 @@ public final class TranslationManager {
                 for (TranslationFile.LocaleTranslation.Translation translation : localeTranslation.translations())
                     translationRegistry.register(translation.key(), locale, new MessageFormat(translation.value().replace("'", "''")));
             }
-            logger.info("Loaded " + translationFile.translations().size() + " translations.");
+            logger.info("Loaded {} translations.", translationFile.translations().size());
         } else {
-            logger.severe("Could not find a translations file. Continuing without translations.");
+            logger.error("Could not find a translations file. Continuing without translations.");
         }
 
         GlobalTranslator.get().addSource(translationRegistry);
