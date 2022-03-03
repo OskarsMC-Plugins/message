@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -69,10 +68,9 @@ public final class MessageHandler {
 
                 PlayerAdapter<Player> playerAdapter = luckPerms.getPlayerAdapter(Player.class);
 
-                CachedMetaData senderMetaData = null;
-                if (event.sender() instanceof Player player) {
-                    senderMetaData = playerAdapter.getUser(player).getCachedData().getMetaData();
-                }
+                CachedMetaData senderMetaData = event.sender() instanceof Player player
+                    ? playerAdapter.getUser(player).getCachedData().getMetaData()
+                    : null;
 
                 CachedMetaData recipientMetaData = playerAdapter.getUser(event.recipient()).getCachedData().getMetaData();
 
@@ -103,17 +101,16 @@ public final class MessageHandler {
     }
 
     private TagResolver craftLuckpermsPlaceholders(String role, CachedMetaData cachedMetaData) {
-        Set<TagResolver> templates = cachedMetaData == null
-            ? Set.of(
+        return cachedMetaData == null
+            ? TagResolver.resolver(
                 Placeholder.component(role + "_prefix", Component.empty()),
                 Placeholder.component(role + "_suffix", Component.empty()),
                 Placeholder.component(role + "_group", Component.empty()))
-            : Set.of(
+            : TagResolver.resolver(
                 Placeholder.component(role + "_prefix", LegacyComponentSerializer.legacyAmpersand().deserialize(Objects.requireNonNullElse(cachedMetaData.getPrefix(), ""))),
                 Placeholder.component(role + "_suffix", LegacyComponentSerializer.legacyAmpersand().deserialize(Objects.requireNonNullElse(cachedMetaData.getSuffix(), ""))),
                 Placeholder.component(role + "_group", Component.text(Objects.requireNonNullElse(cachedMetaData.getPrimaryGroup(), "")))
             );
-        return TagResolver.resolver(templates);
     }
 
     /**
