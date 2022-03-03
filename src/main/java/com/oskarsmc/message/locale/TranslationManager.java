@@ -42,7 +42,7 @@ public final class TranslationManager {
             logger.error("Could not find a translations file. Continuing without translations.");
         }
 
-        GlobalTranslator.get().addSource(translationRegistry);
+        GlobalTranslator.translator().addSource(translationRegistry);
     }
 
     /**

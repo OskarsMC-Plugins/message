@@ -7,15 +7,14 @@ import com.velocitypowered.api.proxy.Player;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.Template;
-import net.kyori.adventure.text.minimessage.template.TemplateResolver;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import net.luckperms.api.platform.PlayerAdapter;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Unmodifiable;
 import org.jetbrains.annotations.UnmodifiableView;
 
 import java.util.ArrayList;
@@ -23,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -56,14 +56,13 @@ public final class MessageHandler {
         }
 
         if (event.getResult().isAllowed()) {
-            Component senderName = event.sender() instanceof Player ? Component.text(((Player) event.sender()).getUsername()) : Component.text("UNKNOWN");
+            Component senderName = event.sender() instanceof Player player ? Component.text(player.getUsername()) : Component.text("UNKNOWN");
             Component receiverName = Component.text(event.recipient().getUsername());
 
-            List<Template> templates = new ArrayList<>(List.of(
-                    Template.template("sender", senderName),
-                    Template.template("receiver", receiverName),
-                    Template.template("message", Component.text(event.message()))
-            ));
+            TagResolver.Builder builder = TagResolver.builder()
+                .resolver(Placeholder.component("sender", senderName))
+                .resolver(Placeholder.component("receiver", receiverName))
+                .resolver(Placeholder.component("message", Component.text(event.message())));
 
             if (messageSettings.luckpermsIntegration()) {
                 LuckPerms luckPerms = LuckPermsProvider.get();
@@ -71,54 +70,50 @@ public final class MessageHandler {
                 PlayerAdapter<Player> playerAdapter = luckPerms.getPlayerAdapter(Player.class);
 
                 CachedMetaData senderMetaData = null;
-                if (event.sender() instanceof Player) {
-                    senderMetaData = playerAdapter.getUser(((Player) event.sender())).getCachedData().getMetaData();
+                if (event.sender() instanceof Player player) {
+                    senderMetaData = playerAdapter.getUser(player).getCachedData().getMetaData();
                 }
 
                 CachedMetaData recipientMetaData = playerAdapter.getUser(event.recipient()).getCachedData().getMetaData();
 
-                templates.addAll(craftLuckpermsTemplates("sender", senderMetaData));
-                templates.addAll(craftLuckpermsTemplates("receiver", recipientMetaData));
+                builder.resolver(craftLuckpermsPlaceholders("sender", senderMetaData));
+                builder.resolver(craftLuckpermsPlaceholders("receiver", recipientMetaData));
             }
 
-            for (Map.Entry<String, Component> entry : event.extraPlaceholders().entrySet()) {
-                templates.add(Template.template(entry.getKey(), entry.getValue()));
-            }
+            event.extraPlaceholders().forEach((st, c) -> builder.resolver(Placeholder.component(st, c)));
 
-            Component senderMessage = miniMessage.deserialize(messageSettings.messageSentMiniMessage(), TemplateResolver.templates(templates));
-            Component receiverMessage = miniMessage.deserialize(messageSettings.messageReceivedMiniMessage(), TemplateResolver.templates(templates));
+            TagResolver placeholders = builder.build();
+
+            Component senderMessage = miniMessage.deserialize(messageSettings.messageSentMiniMessage(), placeholders);
+            Component receiverMessage = miniMessage.deserialize(messageSettings.messageReceivedMiniMessage(), placeholders);
 
             event.sender().sendMessage(senderMessage);
             event.recipient().sendMessage(receiverMessage);
 
-            if (event.sender() instanceof Player) {
+            if (event.sender() instanceof Player player) {
                 conversations.remove(event.recipient());
-                conversations.put(event.recipient(), ((Player) event.sender()));
+                conversations.put(event.recipient(), player);
             }
 
-            Component socialSpyComponent = miniMessage.deserialize(messageSettings.messageSocialSpyMiniMessage(), TemplateResolver.templates(templates));
+            Component socialSpyComponent = miniMessage.deserialize(messageSettings.messageSocialSpyMiniMessage(), placeholders);
             for (CommandSource watcher : conversationWatchers) {
                 watcher.sendMessage(socialSpyComponent);
             }
         }
     }
 
-    private @Unmodifiable List<Template> craftLuckpermsTemplates(String role, CachedMetaData cachedMetaData) {
-        List<Template> templates;
-        if (cachedMetaData == null) {
-            templates = List.of(
-                    Template.template(role + "_prefix", Component.empty()),
-                    Template.template(role + "_suffix", Component.empty()),
-                    Template.template(role + "_group", Component.empty())
+    private TagResolver craftLuckpermsPlaceholders(String role, CachedMetaData cachedMetaData) {
+        Set<TagResolver> templates = cachedMetaData == null
+            ? Set.of(
+                Placeholder.component(role + "_prefix", Component.empty()),
+                Placeholder.component(role + "_suffix", Component.empty()),
+                Placeholder.component(role + "_group", Component.empty()))
+            : Set.of(
+                Placeholder.component(role + "_prefix", LegacyComponentSerializer.legacyAmpersand().deserialize(Objects.requireNonNullElse(cachedMetaData.getPrefix(), ""))),
+                Placeholder.component(role + "_suffix", LegacyComponentSerializer.legacyAmpersand().deserialize(Objects.requireNonNullElse(cachedMetaData.getSuffix(), ""))),
+                Placeholder.component(role + "_group", Component.text(Objects.requireNonNullElse(cachedMetaData.getPrimaryGroup(), "")))
             );
-        } else {
-            templates = List.of(
-                    Template.template(role + "_prefix", LegacyComponentSerializer.legacyAmpersand().deserialize(Objects.requireNonNullElse(cachedMetaData.getPrefix(), ""))),
-                    Template.template(role + "_suffix", LegacyComponentSerializer.legacyAmpersand().deserialize(Objects.requireNonNullElse(cachedMetaData.getSuffix(), ""))),
-                    Template.template(role + "_group", Component.text(Objects.requireNonNullElse(cachedMetaData.getPrimaryGroup(), "")))
-            );
-        }
-        return templates;
+        return TagResolver.resolver(templates);
     }
 
     /**
