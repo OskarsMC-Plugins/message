@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -20,8 +19,8 @@ import java.util.List;
  * The settings container class for the message plugin.
  */
 public final class MessageSettings {
-    private final File dataFolder;
-    private final File file;
+    private final Path dataFolder;
+    private final Path file;
 
     private String messageSentMiniMessage;
     private String messageReceivedMiniMessage;
@@ -34,7 +33,7 @@ public final class MessageSettings {
     private boolean luckpermsIntegration;
     private boolean selfMessageSending;
 
-    private final Double configVersion;
+    private final double configVersion;
     private boolean enabled;
 
     /**
@@ -44,8 +43,8 @@ public final class MessageSettings {
      */
     @Inject
     public MessageSettings(@DataDirectory @NotNull Path dataFolder, Logger logger) {
-        this.dataFolder = dataFolder.toFile();
-        this.file = new File(this.dataFolder, "config.toml");
+        this.dataFolder = dataFolder;
+        this.file = this.dataFolder.resolve("config.toml");
 
         saveDefaultConfig();
         Toml toml = loadConfig();
@@ -56,7 +55,7 @@ public final class MessageSettings {
         this.configVersion = toml.getDouble("developer-info.config-version");
 
         if (!VersionUtils.isLatestConfigVersion(this)) {
-            logger.warn("Your Config is out of date (Latest: " + VersionUtils.CONFIG_VERSION + ", Config Version: " + this.configVersion() + ")!");
+            logger.warn("Your Config is out of date (Latest: {}, Config Version: {})!", VersionUtils.CONFIG_VERSION, this.configVersion());
             logger.warn("Please backup your current config.toml, and delete the current one. A new config will then be created on the next proxy launch.");
             logger.warn("The plugin's functionality will not be enabled until the config is updated.");
             this.enabled(false);
@@ -80,24 +79,29 @@ public final class MessageSettings {
 
     private void saveDefaultConfig() {
         //noinspection ResultOfMethodCallIgnored
-        dataFolder.mkdir();
-        if (file.exists()) return;
+        if (!Files.exists(dataFolder)) {
+            try {
+                Files.createDirectory(file);
+            } catch (IOException e){
+                throw new RuntimeException(e);
+            }
+        }
 
         try (InputStream in = MessageSettings.class.getResourceAsStream("/config.toml")) {
             assert in != null;
-            Files.copy(in, file.toPath());
+            Files.copy(in, file);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Contract(" -> new")
-    private @NotNull File configFile() {
-        return new File(dataFolder, "config.toml");
+    private @NotNull Path configFile() {
+        return this.dataFolder.resolve("config.toml");
     }
 
     private Toml loadConfig() {
-        return new Toml().read(configFile());
+        return new Toml().read(configFile().toFile());
     }
 
     /**
@@ -106,7 +110,7 @@ public final class MessageSettings {
      * @return The MiniMessage markup of the senders sent message.
      */
     public String messageSentMiniMessage() {
-        return messageSentMiniMessage;
+        return this.messageSentMiniMessage;
     }
 
     /**
@@ -115,7 +119,7 @@ public final class MessageSettings {
      * @return The MiniMessage markup of the recipients received message.
      */
     public String messageReceivedMiniMessage() {
-        return messageReceivedMiniMessage;
+        return this.messageReceivedMiniMessage;
     }
 
     /**
@@ -124,7 +128,7 @@ public final class MessageSettings {
      */
     @Pure
     public boolean enabled() {
-        return enabled;
+        return this.enabled;
     }
 
     /**
@@ -143,7 +147,7 @@ public final class MessageSettings {
      */
     @Pure
     public boolean luckpermsIntegration() {
-        return luckpermsIntegration;
+        return this.luckpermsIntegration;
     }
 
     /**
