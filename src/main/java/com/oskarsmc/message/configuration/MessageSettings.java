@@ -81,7 +81,7 @@ public final class MessageSettings {
         //noinspection ResultOfMethodCallIgnored
         if (!Files.exists(dataFolder)) {
             try {
-                Files.createDirectory(file);
+                Files.createDirectory(dataFolder);
             } catch (IOException e){
                 throw new RuntimeException(e);
             }
