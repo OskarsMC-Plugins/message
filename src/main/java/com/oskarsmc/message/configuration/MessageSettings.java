@@ -87,21 +87,28 @@ public final class MessageSettings {
             }
         }
 
-        try (InputStream in = MessageSettings.class.getResourceAsStream("/config.toml")) {
-            assert in != null;
-            Files.copy(in, file);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if(!Files.exists(file)) {
+            try (InputStream in = MessageSettings.class.getResourceAsStream("/config.toml")) {
+                assert in != null;
+                Files.copy(in, file);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     @Contract(" -> new")
     private @NotNull Path configFile() {
-        return this.dataFolder.resolve("config.toml");
+        return this.file;
     }
 
     private Toml loadConfig() {
-        return new Toml().read(configFile().toFile());
+        try {
+            return new Toml().read(Files.newInputStream(this.file));
+        } catch (IOException e){
+            throw new RuntimeException(e);
+        }
+        
     }
 
     /**
