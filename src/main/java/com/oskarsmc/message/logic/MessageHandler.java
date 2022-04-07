@@ -50,7 +50,7 @@ public final class MessageHandler {
      * @param event The Message Event instance.
      */
     public void handleMessageEvent(@NotNull MessageEvent event) {
-        if (messageSettings.selfMessageSending() && event.sender() == event.recipient()) {
+        if (!messageSettings.selfMessageSending() && event.sender() == event.recipient()) {
             event.sender().sendMessage(Component.translatable("oskarsmc.message.command.common.self-sending-error", NamedTextColor.RED));
             return;
         }
