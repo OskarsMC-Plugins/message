@@ -54,51 +54,61 @@ public final class MessageHandler {
             return;
         }
 
-        if (event.getResult().isAllowed()) {
-            Component senderName = event.sender() instanceof Player player ? Component.text(player.getUsername()) : Component.text("UNKNOWN");
-            Component receiverName = Component.text(event.recipient().getUsername());
+        if (!event.getResult().isAllowed()) {
+            return;
+        }
 
-            TagResolver.Builder builder = TagResolver.builder()
-                .resolver(Placeholder.component("sender", senderName))
-                .resolver(Placeholder.component("receiver", receiverName))
-                .resolver(Placeholder.component("message", Component.text(event.message())));
+        Component senderName = event.sender() instanceof Player player ? Component.text(player.getUsername()) : Component.text("UNKNOWN");
+        Component receiverName = Component.text(event.recipient().getUsername());
 
-            if (messageSettings.luckpermsIntegration()) {
-                LuckPerms luckPerms = LuckPermsProvider.get();
+        String senderServer = event.sender() instanceof Player player
+            ? player.getCurrentServer().map(sv -> sv.getServerInfo().getName()).orElse("UNKNOWN")
+            : "UNKNOWN";
+        String receiverServer = event.recipient().getCurrentServer()
+            .map(sv -> sv.getServerInfo().getName()).orElse("UNKNOWN");
 
-                PlayerAdapter<Player> playerAdapter = luckPerms.getPlayerAdapter(Player.class);
+        TagResolver.Builder builder = TagResolver.builder()
+            .resolver(Placeholder.component("sender", senderName))
+            .resolver(Placeholder.component("receiver", receiverName))
+            .resolver(Placeholder.component("message", Component.text(event.message())))
+            .resolver(Placeholder.unparsed("sender_server", senderServer))
+            .resolver(Placeholder.unparsed("receiver_server", receiverServer));
 
-                CachedMetaData senderMetaData = event.sender() instanceof Player player
-                    ? playerAdapter.getUser(player).getCachedData().getMetaData()
-                    : null;
+        if (messageSettings.luckpermsIntegration()) {
+            LuckPerms luckPerms = LuckPermsProvider.get();
 
-                CachedMetaData recipientMetaData = playerAdapter.getUser(event.recipient()).getCachedData().getMetaData();
+            PlayerAdapter<Player> playerAdapter = luckPerms.getPlayerAdapter(Player.class);
 
-                builder.resolver(craftLuckpermsPlaceholders("sender", senderMetaData))
-                    .resolver(craftLuckpermsPlaceholders("receiver", recipientMetaData));
-            } else {
-                builder.resolver(craftPlaceholders());
-            }
+            CachedMetaData senderMetaData = event.sender() instanceof Player player
+                ? playerAdapter.getUser(player).getCachedData().getMetaData()
+                : null;
 
-            event.extraPlaceholders().forEach((st, c) -> builder.resolver(Placeholder.component(st, c)));
+            CachedMetaData recipientMetaData = playerAdapter.getUser(event.recipient()).getCachedData().getMetaData();
 
-            TagResolver placeholders = builder.build();
+            builder.resolver(craftLuckpermsPlaceholders("sender", senderMetaData))
+                .resolver(craftLuckpermsPlaceholders("receiver", recipientMetaData));
+        } else {
+            builder.resolver(craftPlaceholders());
+        }
 
-            Component senderMessage = miniMessage.deserialize(messageSettings.messageSentMiniMessage(), placeholders);
-            Component receiverMessage = miniMessage.deserialize(messageSettings.messageReceivedMiniMessage(), placeholders);
+        event.extraPlaceholders().forEach((st, c) -> builder.resolver(Placeholder.component(st, c)));
 
-            event.sender().sendMessage(senderMessage);
-            event.recipient().sendMessage(receiverMessage);
+        TagResolver placeholders = builder.build();
 
-            if (event.sender() instanceof Player player) {
-                conversations.remove(event.recipient());
-                conversations.put(event.recipient(), player);
-            }
+        Component senderMessage = miniMessage.deserialize(messageSettings.messageSentMiniMessage(), placeholders);
+        Component receiverMessage = miniMessage.deserialize(messageSettings.messageReceivedMiniMessage(), placeholders);
 
-            Component socialSpyComponent = miniMessage.deserialize(messageSettings.messageSocialSpyMiniMessage(), placeholders);
-            for (CommandSource watcher : conversationWatchers) {
-                watcher.sendMessage(socialSpyComponent);
-            }
+        event.sender().sendMessage(senderMessage);
+        event.recipient().sendMessage(receiverMessage);
+
+        if (event.sender() instanceof Player player) {
+            conversations.remove(event.recipient());
+            conversations.put(event.recipient(), player);
+        }
+
+        Component socialSpyComponent = miniMessage.deserialize(messageSettings.messageSocialSpyMiniMessage(), placeholders);
+        for (CommandSource watcher : conversationWatchers) {
+            watcher.sendMessage(socialSpyComponent);
         }
     }
 
