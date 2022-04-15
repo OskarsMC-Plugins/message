@@ -74,8 +74,10 @@ public final class MessageHandler {
 
                 CachedMetaData recipientMetaData = playerAdapter.getUser(event.recipient()).getCachedData().getMetaData();
 
-                builder.resolver(craftLuckpermsPlaceholders("sender", senderMetaData));
-                builder.resolver(craftLuckpermsPlaceholders("receiver", recipientMetaData));
+                builder.resolver(craftLuckpermsPlaceholders("sender", senderMetaData))
+                    .resolver(craftLuckpermsPlaceholders("receiver", recipientMetaData));
+            } else {
+                builder.resolver(craftPlaceholders());
             }
 
             event.extraPlaceholders().forEach((st, c) -> builder.resolver(Placeholder.component(st, c)));
@@ -111,6 +113,17 @@ public final class MessageHandler {
                 Placeholder.component(role + "_suffix", LegacyComponentSerializer.legacyAmpersand().deserialize(Objects.requireNonNullElse(cachedMetaData.getSuffix(), ""))),
                 Placeholder.component(role + "_group", Component.text(Objects.requireNonNullElse(cachedMetaData.getPrimaryGroup(), "")))
             );
+    }
+
+    private TagResolver craftPlaceholders() {
+        return TagResolver.resolver(
+            Placeholder.component("sender_prefix", Component.empty()),
+            Placeholder.component("sender_suffix", Component.empty()),
+            Placeholder.component("sender_group", Component.empty()),
+            Placeholder.component("receiver_prefix", Component.empty()),
+            Placeholder.component("receiver_suffix", Component.empty()),
+            Placeholder.component("receiver_group", Component.empty())
+        );
     }
 
     /**
