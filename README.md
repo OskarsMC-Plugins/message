@@ -76,8 +76,8 @@ Preview these values [here](https://webui.adventure.kyori.net/?mode=chat_closed&
 
 ### Don't understand X? Take a look at some docs:
 
-- <a href="https://docs.adventure.kyori.net/minimessage.html#the-components">MiniMessage: The Components</a>
-- <a href="https://docs.adventure.kyori.net/minimessage.html#placeholder">MiniMessage: Placeholders</a>
+- [MiniMessage: The Components](https://docs.adventure.kyori.net/minimessage.html#the-components)
+- [MiniMessage: Placeholders](https://docs.adventure.kyori.net/minimessage.html#placeholder)
 
 ## Technical Details:
 
