@@ -91,9 +91,7 @@ public final class MessageHandler {
             builder.resolver(craftPlaceholders());
         }
 
-        event.extraPlaceholders().forEach((st, c) -> builder.resolver(Placeholder.component(st, c)));
-
-        TagResolver placeholders = builder.build();
+        TagResolver placeholders = builder.resolver(event.extraPlaceholders()).build();
 
         Component senderMessage = miniMessage.deserialize(messageSettings.messageSentMiniMessage(), placeholders);
         Component receiverMessage = miniMessage.deserialize(messageSettings.messageReceivedMiniMessage(), placeholders);
