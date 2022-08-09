@@ -12,12 +12,12 @@ import java.util.Objects;
 /**
  * The event that is fired when a message is sent.
  */
-public class MessageEvent implements ResultedEvent<ResultedEvent.GenericResult> {
+public class MessageEvent implements ResultedEvent<StringResult> {
     private final CommandSource sender;
     private final Player recipient;
-    private String message;
+    private final String message;
     private final TagResolver.Builder extraPlaceholders;
-    private GenericResult result = GenericResult.allowed();
+    private StringResult result = StringResult.allowed();
 
     /**
      * Construct the message event.
@@ -49,19 +49,11 @@ public class MessageEvent implements ResultedEvent<ResultedEvent.GenericResult> 
     }
 
     /**
-     * Get the contents of the message.
+     * Get the original contents of the message.
      * @return The contents of the message.
      */
     public String message() {
         return message;
-    }
-
-    /**
-     * Set the contents of the message.
-     * @param message The contents of the message.
-     */
-    public void message(String message) {
-        this.message = message;
     }
 
     /**
@@ -82,17 +74,6 @@ public class MessageEvent implements ResultedEvent<ResultedEvent.GenericResult> 
     }
 
     /**
-     * Get an extra placeholder.
-     * @param key The key of the placeholder.
-     * @return The content of the placeholder.
-     * @deprecated do not use
-     */
-    @Deprecated
-    public Component extraPlaceholder(String key) {
-        return Component.empty();
-    }
-
-    /**
      * Get the extra placeholders.
      * @return The extra placeholders.
      */
@@ -101,12 +82,12 @@ public class MessageEvent implements ResultedEvent<ResultedEvent.GenericResult> 
     }
 
     @Override
-    public GenericResult getResult() {
+    public StringResult getResult() {
         return this.result;
     }
 
     @Override
-    public void setResult(GenericResult result) {
+    public void setResult(StringResult result) {
         this.result = Objects.requireNonNull(result);
     }
 }

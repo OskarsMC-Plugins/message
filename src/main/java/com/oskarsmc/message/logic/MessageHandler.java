@@ -70,9 +70,11 @@ public final class MessageHandler {
         TagResolver.Builder builder = TagResolver.builder()
             .resolver(Placeholder.component("sender", senderName))
             .resolver(Placeholder.component("receiver", receiverName))
-            .resolver(Placeholder.component("message", Component.text(event.message())))
             .resolver(Placeholder.unparsed("sender_server", senderServer))
-            .resolver(Placeholder.unparsed("receiver_server", receiverServer));
+            .resolver(Placeholder.unparsed("receiver_server", receiverServer))
+            .resolver(Placeholder.unparsed("message", event.getResult().string() != null
+                ? event.getResult().string()
+                : event.message()));
 
         if (messageSettings.luckpermsIntegration()) {
             LuckPerms luckPerms = LuckPermsProvider.get();
