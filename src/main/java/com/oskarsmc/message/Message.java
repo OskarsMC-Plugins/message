@@ -66,7 +66,7 @@ public final class Message {
 
             // Allow autocompletion regardless of capitalisation
             injector.getInstance(Key.get(new TypeLiteral<VelocityCommandManager<CommandSource>>() {
-            })).setCommandSuggestionProcessor(new CloudSuggestionProcessor());
+            })).commandSuggestionProcessor(new CloudSuggestionProcessor());
 
             // Commands
             injector.getInstance(MessageCommand.class);

@@ -16,13 +16,13 @@ repositories {
 }
 
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
     implementation("org.bstats:bstats-velocity:3.0.0")
     implementation("com.velocitypowered:velocity-api:3.1.2-SNAPSHOT")
-    implementation("cloud.commandframework:cloud-velocity:1.5.0")
-    implementation("cloud.commandframework:cloud-minecraft-extras:1.5.0")
-    compileOnly("net.luckperms:api:5.3")
+    implementation("cloud.commandframework:cloud-velocity:1.7.0")
+    implementation("cloud.commandframework:cloud-minecraft-extras:1.7.0")
+    compileOnly("net.luckperms:api:5.4")
 }
 
 tasks.getByName<Test>("test") {
