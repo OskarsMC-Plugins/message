@@ -18,8 +18,9 @@ public final class SocialSpyCommand {
 
     /**
      * Construct the social spy command.
+     *
      * @param messageSettings Message Settings
-     * @param commandManager Command Manager
+     * @param commandManager  Command Manager
      */
     @Inject
     public SocialSpyCommand(@NotNull MessageSettings messageSettings, @NotNull VelocityCommandManager<CommandSource> commandManager) {
@@ -48,7 +49,9 @@ public final class SocialSpyCommand {
     }
 
     private void addWatcher(CommandSource source) {
-        messageHandler.conversationWatchers.add(source);
+        if (!messageHandler.conversationWatchers.contains(source)) {
+            messageHandler.conversationWatchers.add(source);
+        }
         source.sendMessage(Component.translatable("oskarsmc.message.command.socialspy.on"));
     }
 
