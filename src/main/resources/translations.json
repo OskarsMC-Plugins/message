@@ -3,53 +3,23 @@
   "translations": [
     {
       "language-tag": "en-US",
-      "translations": [
-        {
-          "key": "oskarsmc.message.command.message.argument.player-argument",
-          "value": "The player to send the message to."
-        },
-        {
-          "key": "oskarsmc.message.command.common.argument.message-description",
-          "value": "The message to send to the player."
-        },
-        {
-          "key": "oskarsmc.message.command.socialspy.on",
-          "value": "SocialSpy enabled."
-        },
-        {
-          "key": "oskarsmc.message.command.socialspy.off",
-          "value": "SocialSpy disabled."
-        },
-        {
-          "key": "oskarsmc.message.command.common.self-sending-error",
-          "value": "You cannot send messages to yourself."
-        }
-      ]
+      "translations": {
+        "oskarsmc.message.command.message.argument.player-argument": "The player to send the message to.",
+        "oskarsmc.message.command.common.argument.message-description": "The message to send to the player.",
+        "oskarsmc.message.command.socialspy.on": "SocialSpy enabled.",
+        "oskarsmc.message.command.socialspy.off": "SocialSpy disabled.",
+        "oskarsmc.message.command.common.self-sending-error": "You cannot send messages to yourself."
+      }
     },
     {
       "language-tag": "es-ES",
-      "translations": [
-        {
-          "key": "oskarsmc.message.command.message.argument.player-argument",
-          "value": "El jugador al cual enviar el mensaje."
-        },
-        {
-          "key": "oskarsmc.message.command.common.argument.message-description",
-          "value": "El mensaje que se enviara al jugador."
-        },
-        {
-          "key": "oskarsmc.message.command.socialspy.on",
-          "value": "SocialSpy habilitado."
-        },
-        {
-          "key": "oskarsmc.message.command.socialspy.off",
-          "value": "SocialSpy deshabilitado."
-        },
-        {
-          "key": "oskarsmc.message.command.common.self-sending-error",
-          "value": "No puedes enviarte mensajes a ti mismo."
-        }
-      ]
+      "translations": {
+        "oskarsmc.message.command.message.argument.player-argument": "El jugador al cual enviar el mensaje.",
+        "oskarsmc.message.command.common.argument.message-description": "El mensaje que se enviara al jugador.",
+        "oskarsmc.message.command.socialspy.on": "SocialSpy habilitado.",
+        "oskarsmc.message.command.socialspy.off": "SocialSpy deshabilitado.",
+        "oskarsmc.message.command.common.self-sending-error": "No puedes enviarte mensajes a ti mismo."
+      }
     }
   ]
 }

@@ -3,6 +3,7 @@ package com.oskarsmc.message.locale;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * A Translation file.
@@ -16,6 +17,7 @@ public final class TranslationFile {
 
     /**
      * Get the version of the translation file.
+     *
      * @return The version of the translation file.
      */
     public String translationVersion() {
@@ -24,6 +26,7 @@ public final class TranslationFile {
 
     /**
      * All the translations in the translation file.
+     *
      * @return The translations in the translation file.
      */
     public List<LocaleTranslation> translations() {
@@ -38,10 +41,11 @@ public final class TranslationFile {
         private String languageTag;
 
         @SerializedName("translations")
-        private List<Translation> translations;
+        private Map<String, String> translations;
 
         /**
          * Get the language tag of the translation.
+         *
          * @return The language tag of the translation.
          */
         public String languageTag() {
@@ -50,38 +54,11 @@ public final class TranslationFile {
 
         /**
          * Get all translations in the {@link LocaleTranslation}.
+         *
          * @return All translations in the {@link LocaleTranslation}.
          */
-        public List<Translation> translations() {
+        public Map<String, String> translations() {
             return translations;
-        }
-
-
-        /**
-         * A translation for a single language.
-         */
-        public final static class Translation {
-            @SerializedName("key")
-            private String key;
-
-            @SerializedName("value")
-            private String value;
-
-            /**
-             * Translation key
-             * @return The translation key.
-             */
-            public String key() {
-                return key;
-            }
-
-            /**
-             * Translation value
-             * @return The translation value.
-             */
-            public String value() {
-                return value;
-            }
         }
     }
 }

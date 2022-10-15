@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.oskarsmc"
-version = "1.1.0"
+version = "1.2.0"
 if (!System.getenv("GRADLE_RELEASE").equals("true", ignoreCase = true)) {
     version = "$version-SNAPSHOT"
 }
