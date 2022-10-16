@@ -38,8 +38,9 @@ public final class MessageSettings {
 
     /**
      * Construct message settings.
+     *
      * @param dataFolder Data Folder
-     * @param logger Logger
+     * @param logger     Logger
      */
     @Inject
     public MessageSettings(@DataDirectory @NotNull Path dataFolder, Logger logger) {
@@ -78,16 +79,15 @@ public final class MessageSettings {
     }
 
     private void saveDefaultConfig() {
-        //noinspection ResultOfMethodCallIgnored
         if (!Files.exists(dataFolder)) {
             try {
                 Files.createDirectory(dataFolder);
-            } catch (IOException e){
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
 
-        if(!Files.exists(file)) {
+        if (!Files.exists(file)) {
             try (InputStream in = MessageSettings.class.getResourceAsStream("/config.toml")) {
                 assert in != null;
                 Files.copy(in, file);
@@ -97,7 +97,6 @@ public final class MessageSettings {
         }
     }
 
-    @Contract(" -> new")
     private @NotNull Path configFile() {
         return this.file;
     }
@@ -105,10 +104,10 @@ public final class MessageSettings {
     private Toml loadConfig() {
         try {
             return new Toml().read(Files.newInputStream(this.file));
-        } catch (IOException e){
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        
+
     }
 
     /**
@@ -131,6 +130,7 @@ public final class MessageSettings {
 
     /**
      * Get if the plugin is enabled.
+     *
      * @return If the plugin is enabled.
      */
     @Pure

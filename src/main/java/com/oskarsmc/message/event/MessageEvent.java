@@ -12,6 +12,7 @@ import java.util.Objects;
 /**
  * The event that is fired when a message is sent.
  */
+@SuppressWarnings("unused")
 public class MessageEvent implements ResultedEvent<StringResult> {
     private final CommandSource sender;
     private final Player recipient;
@@ -21,9 +22,10 @@ public class MessageEvent implements ResultedEvent<StringResult> {
 
     /**
      * Construct the message event.
-     * @param sender The message sender. Can be console.
+     *
+     * @param sender    The message sender. Can be console.
      * @param recipient The message recipient.
-     * @param message The message.
+     * @param message   The message.
      */
     public MessageEvent(CommandSource sender, Player recipient, String message) {
         this.sender = sender;
@@ -34,6 +36,7 @@ public class MessageEvent implements ResultedEvent<StringResult> {
 
     /**
      * The sender of the message.
+     *
      * @return The sender of the message.
      */
     public CommandSource sender() {
@@ -42,6 +45,7 @@ public class MessageEvent implements ResultedEvent<StringResult> {
 
     /**
      * The recipient (receiver) of the message.
+     *
      * @return The recipient (receiver) of the message.
      */
     public Player recipient() {
@@ -50,6 +54,7 @@ public class MessageEvent implements ResultedEvent<StringResult> {
 
     /**
      * Get the original contents of the message.
+     *
      * @return The contents of the message.
      */
     public String message() {
@@ -58,7 +63,8 @@ public class MessageEvent implements ResultedEvent<StringResult> {
 
     /**
      * Add an extra placeholder.
-     * @param key The MiniMessage key.
+     *
+     * @param key   The MiniMessage key.
      * @param value The Component to replace the placeholder with.
      */
     public void extraPlaceholder(String key, Component value) {
@@ -67,6 +73,7 @@ public class MessageEvent implements ResultedEvent<StringResult> {
 
     /**
      * Add an extra placeholder.
+     *
      * @param resolver The resolver to add.
      */
     public void extraPlaceholder(TagResolver resolver) {
@@ -75,6 +82,7 @@ public class MessageEvent implements ResultedEvent<StringResult> {
 
     /**
      * Get the extra placeholders.
+     *
      * @return The extra placeholders.
      */
     public TagResolver extraPlaceholders() {

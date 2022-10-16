@@ -2,7 +2,6 @@ package com.oskarsmc.message.locale;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
 import com.google.inject.Inject;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import net.kyori.adventure.key.Key;
