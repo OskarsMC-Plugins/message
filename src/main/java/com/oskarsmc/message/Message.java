@@ -11,6 +11,7 @@ import com.oskarsmc.message.command.MessageCommand;
 import com.oskarsmc.message.command.ReplyCommand;
 import com.oskarsmc.message.command.SocialSpyCommand;
 import com.oskarsmc.message.configuration.MessageSettings;
+import com.oskarsmc.message.locale.CommandExceptionHandler;
 import com.oskarsmc.message.locale.TranslationManager;
 import com.oskarsmc.message.logic.MessageMetrics;
 import com.oskarsmc.message.util.CloudSuggestionProcessor;
@@ -36,6 +37,7 @@ public final class Message {
 
     /**
      * Initialise the plugin.
+     *
      * @param event Proxy Initialise Event
      */
     @Subscribe
@@ -63,6 +65,9 @@ public final class Message {
                     messageSettings.luckpermsIntegration(false);
                 }
             }
+
+            // Register custom exception handlers
+            injector.getInstance(CommandExceptionHandler.class);
 
             // Allow autocompletion regardless of capitalisation
             injector.getInstance(Key.get(new TypeLiteral<VelocityCommandManager<CommandSource>>() {

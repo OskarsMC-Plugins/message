@@ -13,6 +13,13 @@ message-sent = "<white>[<color:#FFCE45>YOU</color> → <color:#D4AC2B><receiver_
 message-received = "<white>[<color:#FFCE45><sender_prefix><sender><sender_suffix></color> → <color:#D4AC2B>YOU</color>] <message></white>"
 message-socialspy = "<gradient:aqua:blue>[SocialSpy] </gradient>[<white><sender> → <receiver>]: <message>"
 
+
+# Customise error handling - leave blank to disable
+# Documentation: https://docs.adventure.kyori.net/minimessage.html#format or https://webui.adventure.kyori.net/
+# Syntax: "class" = "message in minimessage"
+[error-handlers]
+# "cloud.commandframework.exceptions.InvalidSyntaxException" = "<red><lang:oskarsmc.message.command.exceptions.InvalidSyntaxException></red>"
+
 # Aliases:
 # Customise using a TOML string array.
 [aliases]
@@ -22,4 +29,4 @@ socialspy = ["ss"]
 
 # Please don't touch this
 [developer-info]
-config-version = 1.0
+config-version = 1.1

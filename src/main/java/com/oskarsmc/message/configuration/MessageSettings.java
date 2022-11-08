@@ -7,13 +7,17 @@ import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import org.checkerframework.dataflow.qual.Pure;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.UnmodifiableView;
 import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The settings container class for the message plugin.
@@ -25,6 +29,8 @@ public final class MessageSettings {
     private String messageSentMiniMessage;
     private String messageReceivedMiniMessage;
     private String messageSocialSpyMiniMessage;
+
+    private HashMap<Class<? extends Exception>, String> customErrorHandlers;
 
     private List<String> messageAlias;
     private List<String> replyAlias;
@@ -76,6 +82,29 @@ public final class MessageSettings {
         this.messageAlias = toml.getList("aliases.message");
         this.replyAlias = toml.getList("aliases.reply");
         this.socialSpyAlias = toml.getList("aliases.socialspy");
+
+        // Exceptions
+        this.customErrorHandlers = new HashMap<>();
+        Toml handlers = toml.getTable("error-handlers");
+        for (Map.Entry<String, Object> entry : handlers.entrySet()) {
+            String classPath = entry.getKey().replace("\"", "");
+            // classPath = classPath.replace("cloud.commandframework", "com.oskarsmc.message.relocated.cloud"); // cant do this because the string gets relocated
+            if (classPath.startsWith("loud.commandframework", 1)) { // TODO: make this less janky
+                classPath = "com.oskarsmc.message.relocated.cloud" + classPath.substring(22);
+            }
+
+            try {
+                @SuppressWarnings("unchecked")
+                Class<? extends Exception> exceptionClass = (Class<? extends Exception>) Class.forName(classPath);
+
+                this.customErrorHandlers.put(exceptionClass, entry.getValue().toString());
+            } catch (ClassCastException e) {
+                logger.error("Class \"{}\" is not of type exception!", classPath);
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                logger.error("Could not find class \"{}\" as defined in custom exception handlers.", classPath);
+            }
+        }
     }
 
     private void saveDefaultConfig() {
@@ -224,5 +253,15 @@ public final class MessageSettings {
     @Pure
     public List<String> replyAliases() {
         return replyAlias;
+    }
+
+    /**
+     * Get all defined custom error handlers
+     *
+     * @return a map of all defined error handlers
+     */
+    @Contract(pure = true)
+    public @NotNull @UnmodifiableView Map<Class<? extends Exception>, String> getCustomErrorHandlers() {
+        return Collections.unmodifiableMap(customErrorHandlers);
     }
 }
