@@ -10,7 +10,17 @@ import org.slf4j.Logger;
 
 import java.util.Map;
 
+/**
+ * The command exception handler for handling custom exceptions
+ */
 public class CommandExceptionHandler {
+    /**
+     * Construct the command exception handler
+     *
+     * @param settings       message settings
+     * @param commandManager velocity command manager
+     * @param logger         logger
+     */
     @Inject
     public CommandExceptionHandler(@NotNull MessageSettings settings, @NotNull VelocityCommandManager<CommandSource> commandManager, @NotNull Logger logger) {
         MiniMessage miniMessage = MiniMessage.miniMessage();

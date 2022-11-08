@@ -27,12 +27,15 @@ public final class TranslationManager {
     private Logger logger;
 
     /**
-     * Construct the translation manager.
+     * Construct the translation manager
+     *
+     * @param logger        logger
+     * @param dataDirectory plugin data directory
      */
     @Inject
     public TranslationManager(@NotNull Logger logger, @DataDirectory @NotNull Path dataDirectory) {
         this.logger = logger;
-        logger.info("Loading Translations...");
+        logger.info("Loading Translations");
         TranslationRegistry translationRegistry = TranslationRegistry.create(Key.key("oskarsmc", "message"));
         translationRegistry.defaultLocale(Locale.ENGLISH);
 
@@ -55,6 +58,7 @@ public final class TranslationManager {
     /**
      * Reads the translation file and maps it to an {@link TranslationFile} instance.
      *
+     * @param translationsDirectory directory to store translations
      * @return The mapped {@link TranslationFile} instance.
      */
     public @Nullable TranslationFile readTranslationFile(@NotNull Path translationsDirectory) {
