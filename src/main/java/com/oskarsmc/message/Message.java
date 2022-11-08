@@ -20,9 +20,12 @@ import com.oskarsmc.message.util.MessageModule;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
+import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import net.luckperms.api.LuckPermsProvider;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
+import java.nio.file.Path;
 import java.util.function.Function;
 
 /**
@@ -35,6 +38,10 @@ public final class Message {
     @Inject
     private Logger logger;
 
+    @Inject
+    private @DataDirectory
+    @NotNull Path dataFolder;
+
     /**
      * Initialise the plugin.
      *
@@ -42,7 +49,7 @@ public final class Message {
      */
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        MessageSettings messageSettings = injector.getInstance(MessageSettings.class);
+        MessageSettings messageSettings = new MessageSettings(dataFolder, logger);
 
         injector = injector.createChildInjector(
                 new CloudInjectionModule<>(
