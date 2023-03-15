@@ -111,7 +111,7 @@ hangarPublish {
             namespace("OskarsMC-Plugins", "message")
             channel.set("Development")
             apiKey.set(System.getenv("HANGAR_API_KEY"))
-            version.set(version)
+            version.set(project.version.toString())
 
             changelog.set(runCommand("git log -n 1"))
 
@@ -128,7 +128,7 @@ hangarPublish {
             namespace("OskarsMC-Plugins", "message")
             channel.set("Release")
             apiKey.set(System.getenv("HANGAR_API_KEY"))
-            version.set(version)
+            version.set(project.version.toString())
 
 
             changelog.set(System.getenv("HANGAR_RELEASE_CHANGELOG"))
