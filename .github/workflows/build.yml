@@ -27,7 +27,7 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
 
       - name: gradle build
-        run: ./gradlew clean build publish publishAllPublicationsToHangar
+        run: ./gradlew clean build publish publishAllPublicationsToHangar --stacktrace
         env:
           MAVEN_USERNAME: ${{ SECRETS.MAVEN_USERNAME }}
           MAVEN_SECRET: ${{ SECRETS.MAVEN_SECRET }}
