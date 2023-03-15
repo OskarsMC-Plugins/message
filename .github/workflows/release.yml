@@ -41,7 +41,7 @@ jobs:
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ steps.generate_filename.outputs.lowercase }}
+          name: message-${{ github.event.release.tag_name }}
           path: build/libs
           retention-days: 365
 
