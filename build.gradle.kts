@@ -23,12 +23,12 @@ dependencies {
 }
 
 val release = System.getenv("GRADLE_RELEASE").equals("true", ignoreCase = true)
+val gitHash = runCommand("git rev-parse --short HEAD")
 group = "com.oskarsmc"
 version = "1.2.0"
 
-val baseVersion = version
 if (!release) {
-    version = "$version-SNAPSHOT"
+    version = "$version-$gitHash-SNAPSHOT"
 }
 
 
@@ -111,9 +111,10 @@ hangarPublish {
             namespace("OskarsMC-Plugins", "message")
             channel.set("Development")
             apiKey.set(System.getenv("HANGAR_API_KEY"))
+            version.set(version)
 
-            version.set("$baseVersion-" + runCommand("git rev-parse --short HEAD") + "-SNAPSHOT")
-            changelog.set(runCommand("git log --format=%B -n 1"))
+            changelog.set(runCommand("git log -n 1"))
+
 
             platforms {
                 register(Platforms.VELOCITY) {
@@ -127,8 +128,9 @@ hangarPublish {
             namespace("OskarsMC-Plugins", "message")
             channel.set("Release")
             apiKey.set(System.getenv("HANGAR_API_KEY"))
+            version.set(version)
 
-            version.set(project.version.toString())
+
             changelog.set(System.getenv("HANGAR_RELEASE_CHANGELOG"))
 
             platforms {
