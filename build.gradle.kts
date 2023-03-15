@@ -22,6 +22,20 @@ dependencies {
     compileOnly("net.luckperms:api:5.4")
 }
 
+fun runCommand(command: String): String {
+    return Runtime
+        .getRuntime()
+        .exec(command)
+        .let { process ->
+            process.waitFor()
+            val output = process.inputStream.use {
+                it.bufferedReader().use(BufferedReader::readText)
+            }
+            process.destroy()
+            output.trim()
+        }
+}
+
 val release = System.getenv("GRADLE_RELEASE").equals("true", ignoreCase = true)
 val gitHash = runCommand("git rev-parse --short HEAD")
 group = "com.oskarsmc"
@@ -89,20 +103,6 @@ publishing {
             }
         }
     }
-}
-
-fun runCommand(command: String): String {
-    return Runtime
-        .getRuntime()
-        .exec(command)
-        .let { process ->
-            process.waitFor()
-            val output = process.inputStream.use {
-                it.bufferedReader().use(BufferedReader::readText)
-            }
-            process.destroy()
-            output.trim()
-        }
 }
 
 hangarPublish {
