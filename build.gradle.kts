@@ -118,7 +118,7 @@ hangarPublish {
             platforms {
                 register(Platforms.VELOCITY) {
                     jar.set(tasks.shadowJar.flatMap { it.archiveFile })
-                    platformVersions.set(listOf("3.1.1")) // TODO: plugin is actually compiled against 3.1.2-SNAPSHOT!!
+                    platformVersions.set(listOf("3.2"))
                 }
             }
         }
@@ -134,7 +134,7 @@ hangarPublish {
             platforms {
                 register(Platforms.VELOCITY) {
                     jar.set(tasks.shadowJar.flatMap { it.archiveFile })
-                    platformVersions.set(listOf("3.1.1")) // TODO: plugin is actually compiled against 3.1.2-SNAPSHOT!!
+                    platformVersions.set(listOf("3.2"))
                 }
             }
         }
