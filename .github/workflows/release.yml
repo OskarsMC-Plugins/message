@@ -41,8 +41,8 @@ jobs:
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: message-${{ github.event.release.tag_name }}
-          path: build/libs
+          name: message
+          path: build/libs/*.jar
           retention-days: 365
 
       # Release Artifacts
