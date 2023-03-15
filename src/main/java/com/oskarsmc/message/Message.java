@@ -61,12 +61,12 @@ public final class Message {
                 new MessageModule(messageSettings)
         );
 
-        injector.getInstance(TranslationManager.class);
-
         if (messageSettings.enabled()) {
+            injector.getInstance(TranslationManager.class);
+
             if (messageSettings.luckpermsIntegration()) {
                 if (DependencyChecker.luckperms()) {
-                    logger.info("LuckPerms integration enabled. Targeted LuckPerms version 5.3, using {}", LuckPermsProvider.get().getPluginMetadata().getVersion());
+                    logger.info("LuckPerms integration enabled. Targeted LuckPerms version 5.4, using {}", LuckPermsProvider.get().getPluginMetadata().getVersion());
                 } else {
                     logger.warn("LuckPerms integration was enabled but LuckPerms was not detected on the proxy. Continuing without it.");
                     messageSettings.luckpermsIntegration(false);

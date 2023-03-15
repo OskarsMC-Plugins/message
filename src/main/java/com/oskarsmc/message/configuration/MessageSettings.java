@@ -87,6 +87,7 @@ public final class MessageSettings {
         this.customErrorHandlers = new HashMap<>();
         Toml handlers = toml.getTable("error-handlers");
         for (Map.Entry<String, Object> entry : handlers.entrySet()) {
+            // TODO: Fix this jankyness, but works for now
             String classPath = entry.getKey().replace("\"", "");
             // classPath = classPath.replace("cloud.commandframework", "com.oskarsmc.message.relocated.cloud"); // cant do this because the string gets relocated
             if (classPath.startsWith("loud.commandframework", 1)) { // TODO: make this less janky

@@ -2,6 +2,7 @@ package com.oskarsmc.message.logic;
 
 import com.oskarsmc.message.configuration.MessageSettings;
 import com.oskarsmc.message.event.MessageEvent;
+import com.oskarsmc.message.event.StringResult;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import net.kyori.adventure.text.Component;
@@ -38,6 +39,7 @@ public final class MessageHandler {
 
     /**
      * Construct the Message Handler.
+     *
      * @param messageSettings Message Settings
      */
     public MessageHandler(MessageSettings messageSettings) {
@@ -46,9 +48,12 @@ public final class MessageHandler {
 
     /**
      * Handle the message event once it's been fired.
+     *
      * @param event The Message Event instance.
      */
     public void handleMessageEvent(@NotNull MessageEvent event) {
+        event.setResult(StringResult.denied());
+
         if (!messageSettings.selfMessageSending() && event.sender() == event.recipient()) {
             event.sender().sendMessage(Component.translatable("oskarsmc.message.command.common.self-sending-error", NamedTextColor.RED));
             return;
@@ -62,19 +67,19 @@ public final class MessageHandler {
         Component receiverName = Component.text(event.recipient().getUsername());
 
         String senderServer = event.sender() instanceof Player player
-            ? player.getCurrentServer().map(sv -> sv.getServerInfo().getName()).orElse("UNKNOWN")
-            : "UNKNOWN";
+                ? player.getCurrentServer().map(sv -> sv.getServerInfo().getName()).orElse("UNKNOWN")
+                : "UNKNOWN";
         String receiverServer = event.recipient().getCurrentServer()
-            .map(sv -> sv.getServerInfo().getName()).orElse("UNKNOWN");
+                .map(sv -> sv.getServerInfo().getName()).orElse("UNKNOWN");
 
         TagResolver.Builder builder = TagResolver.builder()
-            .resolver(Placeholder.component("sender", senderName))
-            .resolver(Placeholder.component("receiver", receiverName))
-            .resolver(Placeholder.unparsed("sender_server", senderServer))
-            .resolver(Placeholder.unparsed("receiver_server", receiverServer))
-            .resolver(Placeholder.unparsed("message", event.getResult().string() != null
-                ? event.getResult().string()
-                : event.message()));
+                .resolver(Placeholder.component("sender", senderName))
+                .resolver(Placeholder.component("receiver", receiverName))
+                .resolver(Placeholder.unparsed("sender_server", senderServer))
+                .resolver(Placeholder.unparsed("receiver_server", receiverServer))
+                .resolver(Placeholder.unparsed("message", event.getResult().string() != null
+                        ? Objects.requireNonNull(event.getResult().string())
+                        : event.originalMessage()));
 
         if (messageSettings.luckpermsIntegration()) {
             LuckPerms luckPerms = LuckPermsProvider.get();
@@ -82,13 +87,13 @@ public final class MessageHandler {
             PlayerAdapter<Player> playerAdapter = luckPerms.getPlayerAdapter(Player.class);
 
             CachedMetaData senderMetaData = event.sender() instanceof Player player
-                ? playerAdapter.getUser(player).getCachedData().getMetaData()
-                : null;
+                    ? playerAdapter.getUser(player).getCachedData().getMetaData()
+                    : null;
 
             CachedMetaData recipientMetaData = playerAdapter.getUser(event.recipient()).getCachedData().getMetaData();
 
             builder.resolver(craftLuckpermsPlaceholders("sender", senderMetaData))
-                .resolver(craftLuckpermsPlaceholders("receiver", recipientMetaData));
+                    .resolver(craftLuckpermsPlaceholders("receiver", recipientMetaData));
         } else {
             builder.resolver(craftPlaceholders());
         }
@@ -112,32 +117,33 @@ public final class MessageHandler {
         }
     }
 
-    private TagResolver craftLuckpermsPlaceholders(String role, CachedMetaData cachedMetaData) {
+    private @NotNull TagResolver craftLuckpermsPlaceholders(String role, CachedMetaData cachedMetaData) {
         return cachedMetaData == null
-            ? TagResolver.resolver(
+                ? TagResolver.resolver(
                 Placeholder.component(role + "_prefix", Component.empty()),
                 Placeholder.component(role + "_suffix", Component.empty()),
                 Placeholder.component(role + "_group", Component.empty()))
-            : TagResolver.resolver(
+                : TagResolver.resolver(
                 Placeholder.component(role + "_prefix", LegacyComponentSerializer.legacyAmpersand().deserialize(Objects.requireNonNullElse(cachedMetaData.getPrefix(), ""))),
                 Placeholder.component(role + "_suffix", LegacyComponentSerializer.legacyAmpersand().deserialize(Objects.requireNonNullElse(cachedMetaData.getSuffix(), ""))),
                 Placeholder.component(role + "_group", Component.text(Objects.requireNonNullElse(cachedMetaData.getPrimaryGroup(), "")))
-            );
+        );
     }
 
-    private TagResolver craftPlaceholders() {
+    private @NotNull TagResolver craftPlaceholders() {
         return TagResolver.resolver(
-            Placeholder.component("sender_prefix", Component.empty()),
-            Placeholder.component("sender_suffix", Component.empty()),
-            Placeholder.component("sender_group", Component.empty()),
-            Placeholder.component("receiver_prefix", Component.empty()),
-            Placeholder.component("receiver_suffix", Component.empty()),
-            Placeholder.component("receiver_group", Component.empty())
+                Placeholder.component("sender_prefix", Component.empty()),
+                Placeholder.component("sender_suffix", Component.empty()),
+                Placeholder.component("sender_group", Component.empty()),
+                Placeholder.component("receiver_prefix", Component.empty()),
+                Placeholder.component("receiver_suffix", Component.empty()),
+                Placeholder.component("receiver_group", Component.empty())
         );
     }
 
     /**
      * Get all current conversations.
+     *
      * @return An unmodifiable map with all conversations.
      */
     public @NotNull @UnmodifiableView Map<Player, Player> conversations() {

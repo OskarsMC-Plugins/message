@@ -1,13 +1,12 @@
+import io.papermc.hangarpublishplugin.model.Platforms
+import java.io.*
+
 plugins {
     java
     id("com.github.johnrengelman.shadow") version "7.1.2"
     `maven-publish`
-}
-
-group = "com.oskarsmc"
-version = "1.2.0"
-if (!System.getenv("GRADLE_RELEASE").equals("true", ignoreCase = true)) {
-    version = "$version-SNAPSHOT"
+    id("xyz.jpenilla.run-velocity") version "2.0.0"
+    id("io.papermc.hangar-publish-plugin") version "0.0.4"
 }
 
 repositories {
@@ -16,18 +15,22 @@ repositories {
 }
 
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
-    implementation("org.bstats:bstats-velocity:3.0.0")
+    implementation("org.bstats:bstats-velocity:3.0.1")
     implementation("com.velocitypowered:velocity-api:3.1.2-SNAPSHOT")
-    implementation("cloud.commandframework:cloud-velocity:1.7.0")
-    implementation("cloud.commandframework:cloud-minecraft-extras:1.7.0")
+    implementation("cloud.commandframework:cloud-velocity:1.8.2")
+    implementation("cloud.commandframework:cloud-minecraft-extras:1.8.2")
     compileOnly("net.luckperms:api:5.4")
 }
 
-tasks.getByName<Test>("test") {
-    useJUnitPlatform()
+val release = System.getenv("GRADLE_RELEASE").equals("true", ignoreCase = true)
+group = "com.oskarsmc"
+version = "1.2.0"
+
+val baseVersion = version
+if (!release) {
+    version = "$version-SNAPSHOT"
 }
+
 
 tasks {
     processResources {
@@ -47,6 +50,13 @@ tasks {
 
     build {
         dependsOn(named("shadowJar"))
+    }
+
+    runVelocity {
+        // Configure the Velocity version for our task.
+        // This is the only required configuration besides applying the plugin.
+        // Your plugin's jar (or shadowJar if present) will be used automatically.
+        velocityVersion("3.1.2-SNAPSHOT")
     }
 }
 
@@ -76,6 +86,56 @@ publishing {
             credentials {
                 username = System.getenv("MAVEN_USERNAME")
                 password = System.getenv("MAVEN_SECRET")
+            }
+        }
+    }
+}
+
+fun runCommand(command: String): String {
+    return Runtime
+        .getRuntime()
+        .exec(command)
+        .let { process ->
+            process.waitFor()
+            val output = process.inputStream.use {
+                it.bufferedReader().use(BufferedReader::readText)
+            }
+            process.destroy()
+            output.trim()
+        }
+}
+
+hangarPublish {
+    if (!release) {
+        publications.register("dev") {
+            namespace("OskarsMC-Plugins", "message")
+            channel.set("Development")
+            apiKey.set(System.getenv("HANGAR_API_KEY"))
+
+            version.set("$baseVersion-" + runCommand("git rev-parse --short HEAD") + "-SNAPSHOT")
+            changelog.set(runCommand("git log --format=%B -n 1"))
+
+            platforms {
+                register(Platforms.VELOCITY) {
+                    jar.set(tasks.shadowJar.flatMap { it.archiveFile })
+                    platformVersions.set(listOf("3.1.2"))
+                }
+            }
+        }
+    } else {
+        publications.register("publish") {
+            namespace("OskarsMC-Plugins", "message")
+            channel.set("Release")
+            apiKey.set(System.getenv("HANGAR_API_KEY"))
+
+            version.set(project.version.toString())
+            changelog.set(System.getenv("HANGAR_RELEASE_CHANGELOG"))
+
+            platforms {
+                register(Platforms.VELOCITY) {
+                    jar.set(tasks.shadowJar.flatMap { it.archiveFile })
+                    platformVersions.set(listOf("3.1.2"))
+                }
             }
         }
     }

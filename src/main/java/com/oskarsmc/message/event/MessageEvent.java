@@ -16,7 +16,7 @@ import java.util.Objects;
 public class MessageEvent implements ResultedEvent<StringResult> {
     private final CommandSource sender;
     private final Player recipient;
-    private final String message;
+    private final String originalMessage;
     private final TagResolver.Builder extraPlaceholders;
     private StringResult result = StringResult.allowed();
 
@@ -30,8 +30,9 @@ public class MessageEvent implements ResultedEvent<StringResult> {
     public MessageEvent(CommandSource sender, Player recipient, String message) {
         this.sender = sender;
         this.recipient = recipient;
-        this.message = message;
+        this.originalMessage = message;
         this.extraPlaceholders = TagResolver.builder();
+        this.result = StringResult.message(message);
     }
 
     /**
@@ -57,8 +58,8 @@ public class MessageEvent implements ResultedEvent<StringResult> {
      *
      * @return The contents of the message.
      */
-    public String message() {
-        return message;
+    public String originalMessage() {
+        return originalMessage;
     }
 
     /**

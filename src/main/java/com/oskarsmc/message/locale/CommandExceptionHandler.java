@@ -27,6 +27,10 @@ public class CommandExceptionHandler {
         for (Map.Entry<Class<? extends Exception>, String> entry : settings.getCustomErrorHandlers().entrySet()) {
             commandManager.registerExceptionHandler(entry.getKey(), (commandSource, e) -> commandSource.sendMessage(miniMessage.deserialize(entry.getValue())));
         }
-        logger.info("Loaded {} custom exception handlers", settings.getCustomErrorHandlers().size());
+
+        int exceptionHandlerAmount = settings.getCustomErrorHandlers().size();
+        if (exceptionHandlerAmount > 0) {
+            logger.info("Loaded {} custom exception handlers", settings.getCustomErrorHandlers().size());
+        }
     }
 }
