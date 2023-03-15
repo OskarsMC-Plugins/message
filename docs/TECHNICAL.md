@@ -47,7 +47,7 @@ Do not shade message into your plugin. It will always be present in its plugin f
 <summary>Gradle Kotlin DSL</summary>
 
 ```kotlin
-maven("https:/repository.oskarsmc.com/releases")
+maven("https://repository.oskarsmc.com/releases")
 ```
 
 ```kotlin

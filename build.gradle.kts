@@ -39,7 +39,7 @@ fun runCommand(command: String): String {
 val release = System.getenv("GRADLE_RELEASE").equals("true", ignoreCase = true)
 val gitHash = runCommand("git rev-parse --short HEAD")
 group = "com.oskarsmc"
-version = "1.2.0"
+version = "1.3.0"
 
 if (!release) {
     version = "$version-$gitHash-SNAPSHOT"
