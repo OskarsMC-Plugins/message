@@ -2,7 +2,6 @@ package com.oskarsmc.message.logic;
 
 import com.oskarsmc.message.configuration.MessageSettings;
 import com.oskarsmc.message.event.MessageEvent;
-import com.oskarsmc.message.event.StringResult;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import io.github.miniplaceholders.api.MiniPlaceholders;
@@ -19,11 +18,7 @@ import net.luckperms.api.platform.PlayerAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
