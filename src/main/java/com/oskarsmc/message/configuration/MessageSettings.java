@@ -37,6 +37,7 @@ public final class MessageSettings {
     private List<String> socialSpyAlias;
 
     private boolean luckpermsIntegration;
+    private boolean miniPlaceholdersIntegration;
     private boolean selfMessageSending;
 
     private final double configVersion;
@@ -72,6 +73,7 @@ public final class MessageSettings {
         // Plugin Features
         this.luckpermsIntegration = toml.getBoolean("plugin.luckperms-integration");
         this.selfMessageSending = toml.getBoolean("plugin.allow-self-message-sending");
+        this.miniPlaceholdersIntegration = toml.getBoolean("plugin.miniplaceholders-integration");
 
         // Messages - Message
         this.messageSentMiniMessage = toml.getString("messages.message-sent");
@@ -194,6 +196,25 @@ public final class MessageSettings {
      */
     public void luckpermsIntegration(boolean luckpermsIntegration) {
         this.luckpermsIntegration = luckpermsIntegration;
+    }
+
+    /**
+     * Get miniplaceholders integration.
+     *
+     * @return MiniPlaceholders integration.
+     */
+    @Pure
+    public boolean miniPlaceholdersIntegration() {
+        return this.miniPlaceholdersIntegration;
+    }
+
+    /**
+     * Set miniplaceholders integration.
+     *
+     * @param miniPlaceholdersIntegration MiniPlaceholders integration
+     */
+    public void miniPlaceholdersIntegration(boolean miniPlaceholdersIntegration) {
+        this.miniPlaceholdersIntegration = miniPlaceholdersIntegration;
     }
 
     /**

@@ -20,6 +20,7 @@ dependencies {
     implementation("cloud.commandframework:cloud-velocity:1.8.2")
     implementation("cloud.commandframework:cloud-minecraft-extras:1.8.2")
     compileOnly("net.luckperms:api:5.4")
+    compileOnly("io.github.miniplaceholders:miniplaceholders-api:2.0.0")
 }
 
 fun runCommand(command: String): String {

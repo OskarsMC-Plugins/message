@@ -8,6 +8,15 @@
     "OskarsMC",
     "OskarZyg"
   ],
-  "dependencies": [],
+  "dependencies": [
+    {
+      "id":"miniplaceholders",
+      "optional":true
+    },
+    {
+      "id":"luckperms",
+      "optional":true
+    }
+  ],
   "main": "com.oskarsmc.message.Message"
 }

@@ -16,4 +16,17 @@ public final class DependencyChecker {
             return false;
         }
     }
+
+    /**
+     * Check if the miniplaceholders api is present in the classpath.
+     * @return If the miniplaceholders api is present in the classpath.
+     */
+    public static boolean miniplaceholders() {
+        try {
+            Class.forName("io.github.miniplaceholders.api.MiniPlaceholders");
+            return true;
+        } catch (ClassNotFoundException exception) {
+            return false;
+        }
+    }
 }
