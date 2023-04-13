@@ -73,6 +73,15 @@ public final class Message {
                 }
             }
 
+            if (messageSettings.miniPlaceholdersIntegration()) {
+                if (DependencyChecker.miniplaceholders()) {
+                    logger.info("MiniPlaceholders integration enabled.");
+                } else {
+                    logger.warn("MiniPlaceholders integration was enabled but MiniPlaceholders was not detected on the proxy. Continuing without it.");
+                    messageSettings.miniPlaceholdersIntegration(false);
+                }
+            }
+
             // Register custom exception handlers
             injector.getInstance(CommandExceptionHandler.class);
 

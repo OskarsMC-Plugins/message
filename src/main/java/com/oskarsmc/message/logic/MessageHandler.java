@@ -5,6 +5,7 @@ import com.oskarsmc.message.event.MessageEvent;
 import com.oskarsmc.message.event.StringResult;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
+import io.github.miniplaceholders.api.MiniPlaceholders;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -96,6 +97,10 @@ public final class MessageHandler {
                     .resolver(craftLuckpermsPlaceholders("receiver", recipientMetaData));
         } else {
             builder.resolver(craftPlaceholders());
+        }
+
+        if (messageSettings.miniPlaceholdersIntegration()) {
+            builder.resolver(MiniPlaceholders.getRelationalGlobalPlaceholders(event.sender(), event.recipient()));
         }
 
         TagResolver placeholders = builder.resolver(event.extraPlaceholders()).build();

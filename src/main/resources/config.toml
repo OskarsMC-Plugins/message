@@ -2,6 +2,7 @@
 [plugin]
 enabled = true
 luckperms-integration = true # If luckperms is found, use luckperms prefixes and suffixes.
+miniplaceholders-integration = true # If miniplaceholders is present, you can use the MiniPlaceholders placeholders in the messages.
 allow-self-message-sending = true # Allow a player to send messages to themselves.
 
 # Customise messages using MiniMessage
