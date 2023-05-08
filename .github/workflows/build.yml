@@ -27,11 +27,7 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
 
       - name: gradle build
-        run: ./gradlew clean build publish publishAllPublicationsToHangar
-        env:
-          MAVEN_USERNAME: ${{ SECRETS.MAVEN_USERNAME }}
-          MAVEN_SECRET: ${{ SECRETS.MAVEN_SECRET }}
-          HANGAR_API_KEY: ${{ SECRETS.HANGAR_API_KEY }}
+        run: ./gradlew clean build
 
       # Upload Artifacts
       - uses: actions/upload-artifact@v2
@@ -39,3 +35,31 @@ jobs:
           name: message
           path: build/libs
           retention-days: 60
+  publish:
+    strategy:
+      matrix:
+        java: [ "17" ]
+        os: [ "ubuntu-latest" ]
+
+    needs: build
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: "checkout"
+        uses: actions/checkout@v3
+
+      - name: "setup java"
+        uses: actions/setup-java@v2
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: 'adopt'
+          cache: gradle
+
+      - name: "validate gradle wrapper"
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: gradle publish
+        run: ./gradlew build publish publishAllPublicationsToHangar
+        env:
+          MAVEN_USERNAME: ${{ SECRETS.MAVEN_USERNAME }}
+          MAVEN_SECRET: ${{ SECRETS.MAVEN_SECRET }}
+          HANGAR_API_KEY: ${{ SECRETS.HANGAR_API_KEY }}
