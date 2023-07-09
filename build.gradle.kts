@@ -25,22 +25,22 @@ dependencies {
 
 fun runCommand(command: String): String {
     return Runtime
-        .getRuntime()
-        .exec(command)
-        .let { process ->
-            process.waitFor()
-            val output = process.inputStream.use {
-                it.bufferedReader().use(BufferedReader::readText)
+            .getRuntime()
+            .exec(command)
+            .let { process ->
+                process.waitFor()
+                val output = process.inputStream.use {
+                    it.bufferedReader().use(BufferedReader::readText)
+                }
+                process.destroy()
+                output.trim()
             }
-            process.destroy()
-            output.trim()
-        }
 }
 
 val release = System.getenv("GRADLE_RELEASE").equals("true", ignoreCase = true)
 val gitHash = runCommand("git rev-parse --short HEAD")
 group = "com.oskarsmc"
-version = "1.3.0"
+version = "1.4.0"
 
 if (!release) {
     version = "$version-$gitHash-SNAPSHOT"
