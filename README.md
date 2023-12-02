@@ -42,7 +42,7 @@ worldwide, with little reported bugs.
             <a href="https://hangar.papermc.io/OskarsMC-Plugins/message/">hangar.papermc.io</a>
         </td>
         <td>
-            <a href="https://repository.oskarsmc.com/releases/com/oskarsmc/message/">repository.oskarsmc.com</a>
+            <a href="https://repository.oskarsmc.com/#/releases/com/oskarsmc/message">repository.oskarsmc.com</a>
         </td>
     </tr>
 
