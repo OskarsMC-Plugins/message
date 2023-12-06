@@ -15,7 +15,9 @@ It has:
 * **API integration** - other plugins can integrate with message, for example moderation plugins or your internal
   toolkit for the best user & moderation experiences
 
-<img src="https://bstats.org/signatures/velocity/message.svg/" alt="message usage statistics 20servers, 100players at the time of writing">
+<a href="https://bstats.org/plugin/velocity/message/11242">
+  <img src="https://bstats.org/signatures/velocity/message.svg/" alt="message usage statistics 20servers, 100players at the time of writing">
+</a>
 message has dispatched thousands of messages on velocity servers
 worldwide, with little reported bugs.
 
