@@ -1,8 +1,9 @@
 package com.oskarsmc.message;
 
-import cloud.commandframework.execution.CommandExecutionCoordinator;
-import cloud.commandframework.velocity.CloudInjectionModule;
-import cloud.commandframework.velocity.VelocityCommandManager;
+import org.incendo.cloud.SenderMapper;
+import org.incendo.cloud.execution.ExecutionCoordinator;
+import org.incendo.cloud.velocity.CloudInjectionModule;
+import org.incendo.cloud.velocity.VelocityCommandManager;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Key;
@@ -26,7 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.nio.file.Path;
-import java.util.function.Function;
 
 /**
  * The main class for the message plugin.
@@ -54,9 +54,8 @@ public final class Message {
         injector = injector.createChildInjector(
                 new CloudInjectionModule<>(
                         CommandSource.class,
-                        CommandExecutionCoordinator.simpleCoordinator(),
-                        Function.identity(),
-                        Function.identity()
+                        ExecutionCoordinator.simpleCoordinator(),
+                        SenderMapper.identity()
                 ),
                 new MessageModule(messageSettings)
         );
@@ -87,7 +86,7 @@ public final class Message {
 
             // Allow autocompletion regardless of capitalisation
             injector.getInstance(Key.get(new TypeLiteral<VelocityCommandManager<CommandSource>>() {
-            })).commandSuggestionProcessor(new CloudSuggestionProcessor());
+            })).suggestionProcessor(new CloudSuggestionProcessor());
 
             // Commands
             injector.getInstance(MessageCommand.class);

@@ -23,7 +23,7 @@ public final class DependencyChecker {
      */
     public static boolean miniplaceholders() {
         try {
-            Class.forName("io.github.miniplaceholders.api.MiniPlaceholders");
+            Class.forName("io.github.miniplaceholders.api.types.RelationalAudience");
             return true;
         } catch (ClassNotFoundException exception) {
             return false;

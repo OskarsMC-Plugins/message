@@ -11,9 +11,9 @@
 
 ## Java
 
-Recommended Version: 17
+Recommended Version: 21
 
-Tested Versions: 16, 17
+Tested Versions: 21, 25
 
 ## API
 

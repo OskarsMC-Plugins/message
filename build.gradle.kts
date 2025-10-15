@@ -1,26 +1,26 @@
 import io.papermc.hangarpublishplugin.model.Platforms
 import java.io.*
+import java.util.Date
 
 plugins {
     java
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("com.gradleup.shadow") version "9.2.2"
     `maven-publish`
-    id("xyz.jpenilla.run-velocity") version "2.0.0"
+    id("xyz.jpenilla.run-velocity") version "3.0.2"
     id("io.papermc.hangar-publish-plugin") version "0.0.4"
 }
 
 repositories {
-    mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
 }
 
 dependencies {
-    implementation("org.bstats:bstats-velocity:3.0.1")
-    implementation("com.velocitypowered:velocity-api:3.1.2-SNAPSHOT")
-    implementation("cloud.commandframework:cloud-velocity:1.8.2")
-    implementation("cloud.commandframework:cloud-minecraft-extras:1.8.2")
-    compileOnly("net.luckperms:api:5.4")
-    compileOnly("io.github.miniplaceholders:miniplaceholders-api:2.0.0")
+    implementation("org.bstats:bstats-velocity:3.1.0")
+    implementation("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
+    implementation("org.incendo:cloud-velocity:2.0.0-SNAPSHOT") {}
+    implementation("org.incendo:cloud-minecraft-extras:2.0.0-SNAPSHOT")
+    compileOnly("net.luckperms:api:5.5")
+    compileOnly("io.github.miniplaceholders:miniplaceholders-api:3.1.0")
 }
 
 fun runCommand(command: String): String {
@@ -48,6 +48,11 @@ if (!release) {
 
 
 tasks {
+    compileJava {
+        options.encoding = Charsets.UTF_8.name()
+        options.release.set(21)
+    }
+
     processResources {
         expand("project" to project)
     }
@@ -55,31 +60,44 @@ tasks {
     shadowJar {
         dependencies {
             include {
-                it.moduleGroup == "org.bstats" || it.moduleGroup == "cloud.commandframework" || it.moduleGroup == "io.leangen.geantyref"
+                it.moduleGroup == "org.bstats" || it.moduleGroup == "org.incendo" || it.moduleGroup == "io.leangen.geantyref"
+            }
+            exclude{
+                it.moduleGroup == "io.leangen.geantyref"
             }
         }
         relocate("org.bstats", "com.oskarsmc.message.relocated.bstats")
-        relocate("cloud.commandframework", "com.oskarsmc.message.relocated.cloud")
-        relocate("io.leangen.geantyref", "com.oskarsmc.message.relocated.geantyref")
+        relocate("org.incendo", "com.oskarsmc.message.relocated.incendo")
+        //relocate("io.leangen.geantyref", "com.oskarsmc.message.relocated.geantyref")
     }
 
     build {
-        dependsOn(named("shadowJar"))
+        dependsOn(shadowJar)
     }
 
     runVelocity {
         // Configure the Velocity version for our task.
         // This is the only required configuration besides applying the plugin.
         // Your plugin's jar (or shadowJar if present) will be used automatically.
-        velocityVersion("3.1.2-SNAPSHOT")
+        velocityVersion("3.4.0-SNAPSHOT")
+    }
+
+    jar {
+        manifest {
+            attributes(
+                "Implementation-Title" to "message",
+                "Implementation-Version" to project.version,
+                "Implementation-Build-Date" to Date(),
+                "Implementation-Vendor" to "OskarsMC"
+            )
+        }
     }
 }
 
-val jar by tasks.getting(Jar::class) {
-    manifest {
-        attributes["Implementation-Title"] = "message"
-        attributes["Implementation-Version"] = project.version
-        attributes["Implementation-Vendor"] = "OskarsMC"
+java {
+    toolchain{
+        languageVersion.set(JavaLanguageVersion.of(21))
+        vendor.set(JvmVendorSpec.AZUL)
     }
 }
 
@@ -120,7 +138,7 @@ hangarPublish {
             platforms {
                 register(Platforms.VELOCITY) {
                     jar.set(tasks.shadowJar.flatMap { it.archiveFile })
-                    platformVersions.set(listOf("3.2"))
+                    platformVersions.set(listOf("3.4"))
                 }
             }
         }
@@ -137,7 +155,7 @@ hangarPublish {
             platforms {
                 register(Platforms.VELOCITY) {
                     jar.set(tasks.shadowJar.flatMap { it.archiveFile })
-                    platformVersions.set(listOf("3.2"))
+                    platformVersions.set(listOf("3.4"))
                 }
             }
         }

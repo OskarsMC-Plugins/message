@@ -6,7 +6,7 @@ import com.google.inject.Inject;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.translation.GlobalTranslator;
-import net.kyori.adventure.translation.TranslationRegistry;
+import net.kyori.adventure.translation.TranslationStore;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -23,8 +23,7 @@ import java.util.Objects;
  * The translation manager in charge of registering translations.
  */
 public final class TranslationManager {
-    @Inject
-    private Logger logger;
+    private final Logger logger;
 
     /**
      * Construct the translation manager
@@ -36,7 +35,7 @@ public final class TranslationManager {
     public TranslationManager(@NotNull Logger logger, @DataDirectory @NotNull Path dataDirectory) {
         this.logger = logger;
         logger.info("Loading Translations");
-        TranslationRegistry translationRegistry = TranslationRegistry.create(Key.key("oskarsmc", "message"));
+        TranslationStore.StringBased<MessageFormat> translationRegistry = TranslationStore.messageFormat(Key.key("oskarsmc", "message"));
         translationRegistry.defaultLocale(Locale.ENGLISH);
 
         TranslationFile translationFile = readTranslationFile(dataDirectory.resolve("translations/"));
@@ -83,8 +82,7 @@ public final class TranslationManager {
                 return readTranslationFile(translationsDirectory);
             }
         } catch (IOException | JsonParseException exception) {
-            exception.printStackTrace();
-            logger.error("Could not read, parse, or write to {}", relativeCurrentTranslationFile);
+            logger.error("Could not read, parse, or write to {}", relativeCurrentTranslationFile, exception);
             return null;
         }
     }

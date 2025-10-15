@@ -102,10 +102,9 @@ public final class MessageSettings {
 
                 this.customErrorHandlers.put(exceptionClass, entry.getValue().toString());
             } catch (ClassCastException e) {
-                logger.error("Class \"{}\" is not of type exception!", classPath);
-                e.printStackTrace();
+                logger.error("Class \"{}\" is not of type exception!", classPath, e);
             } catch (ClassNotFoundException e) {
-                logger.error("Could not find class \"{}\" as defined in custom exception handlers.", classPath);
+                logger.error("Could not find class \"{}\" as defined in custom exception handlers.", classPath, e);
             }
         }
     }

@@ -1,10 +1,10 @@
 package com.oskarsmc.message.command;
 
-import cloud.commandframework.Command;
-import cloud.commandframework.arguments.standard.StringArgument;
-import cloud.commandframework.minecraft.extras.RichDescription;
-import cloud.commandframework.velocity.VelocityCommandManager;
-import cloud.commandframework.velocity.arguments.PlayerArgument;
+import org.incendo.cloud.Command;
+import org.incendo.cloud.parser.standard.StringParser;
+import org.incendo.cloud.minecraft.extras.RichDescription;
+import org.incendo.cloud.velocity.VelocityCommandManager;
+import org.incendo.cloud.velocity.parser.PlayerParser;
 import com.google.inject.Inject;
 import com.oskarsmc.message.configuration.MessageSettings;
 import com.oskarsmc.message.event.MessageEvent;
@@ -31,14 +31,14 @@ public final class MessageCommand {
         Command.Builder<CommandSource> builder = commandManager.commandBuilder("message", messageSettings.messageAliases().toArray(new String[0]));
 
         commandManager.command(builder
-                .argument(PlayerArgument.of("player"), RichDescription.translatable("oskarsmc.message.command.message.argument.player-argument"))
-                .argument(StringArgument.of("message", StringArgument.StringMode.GREEDY), RichDescription.translatable("oskarsmc.message.command.common.argument.message-description"))
+                .required("player", PlayerParser.playerParser(), RichDescription.translatable("oskarsmc.message.command.message.argument.player-argument"))
+                .required("message", StringParser.greedyStringParser(), RichDescription.translatable("oskarsmc.message.command.common.argument.message-description"))
                 .permission(new DefaultPermission("osmc.message.send"))
                 .handler(context -> {
                     Player receiver = context.get("player");
 
                     proxyServer.getEventManager().fire(new MessageEvent(
-                            context.getSender(),
+                            context.sender(),
                             receiver,
                             context.get("message")
                     )).thenAccept(messageHandler::handleMessageEvent);

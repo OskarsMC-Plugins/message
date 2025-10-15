@@ -1,37 +1,26 @@
 package com.oskarsmc.message.util;
 
-import cloud.commandframework.execution.CommandSuggestionProcessor;
-import cloud.commandframework.execution.preprocessor.CommandPreprocessingContext;
 import com.velocitypowered.api.command.CommandSource;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.incendo.cloud.execution.preprocessor.CommandPreprocessingContext;
+import org.incendo.cloud.suggestion.Suggestion;
+import org.incendo.cloud.suggestion.SuggestionProcessor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
+import java.util.stream.Stream;
 
 /**
  * Lowercase Cloud Suggestion Processor
  */
-public final class CloudSuggestionProcessor implements CommandSuggestionProcessor<CommandSource> {
+public final class CloudSuggestionProcessor implements SuggestionProcessor<CommandSource> {
 
-    @Override
-    public @NonNull List<String> apply(@NonNull CommandPreprocessingContext<CommandSource> context, @NonNull List<String> strings) {
-        String currentInput;
+  @Override
+  public @NonNull Stream<@NonNull Suggestion> process(@NonNull CommandPreprocessingContext<CommandSource> context, @NonNull Stream<@NonNull Suggestion> suggestions) {
+    final String currentInput = context.commandInput().isEmpty()
+        ? ""
+        : context.commandInput().peekString().toLowerCase(Locale.ROOT);
 
-        if (context.getInputQueue().isEmpty()) {
-            currentInput = "";
-        } else {
-            currentInput = context.getInputQueue().peek();
-        }
-
-        currentInput = currentInput.toLowerCase();
-        ArrayList<String> suggestions = new ArrayList<>();
-
-        for (String suggestion : strings) {
-            if (suggestion.toLowerCase().startsWith(currentInput)) {
-                suggestions.add(suggestion);
-            }
-        }
-
-        return suggestions;
-    }
+    return suggestions
+        .filter(suggestion -> suggestion.suggestion().toLowerCase(Locale.ROOT).startsWith(currentInput));
+  }
 }

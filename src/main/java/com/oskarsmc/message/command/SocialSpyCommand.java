@@ -1,7 +1,7 @@
 package com.oskarsmc.message.command;
 
-import cloud.commandframework.Command;
-import cloud.commandframework.velocity.VelocityCommandManager;
+import org.incendo.cloud.Command;
+import org.incendo.cloud.velocity.VelocityCommandManager;
 import com.google.inject.Inject;
 import com.oskarsmc.message.configuration.MessageSettings;
 import com.oskarsmc.message.logic.MessageHandler;
@@ -28,21 +28,21 @@ public final class SocialSpyCommand {
 
         commandManager.command(builder
                 .literal("on")
-                .handler(context -> addWatcher(context.getSender()))
+                .handler(context -> addWatcher(context.sender()))
         );
 
         commandManager.command(builder
                 .literal("off")
-                .handler(context -> removeWatcher(context.getSender()))
+                .handler(context -> removeWatcher(context.sender()))
         );
 
         commandManager.command(builder
                 .literal("toggle")
                 .handler(context -> {
-                    if (messageHandler.conversationWatchers.contains(context.getSender())) {
-                        removeWatcher(context.getSender());
+                    if (messageHandler.conversationWatchers.contains(context.sender())) {
+                        removeWatcher(context.sender());
                     } else {
-                        addWatcher(context.getSender());
+                        addWatcher(context.sender());
                     }
                 })
         );

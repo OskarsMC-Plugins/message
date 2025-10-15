@@ -1,9 +1,9 @@
 package com.oskarsmc.message.command;
 
-import cloud.commandframework.Command;
-import cloud.commandframework.arguments.standard.StringArgument;
-import cloud.commandframework.minecraft.extras.RichDescription;
-import cloud.commandframework.velocity.VelocityCommandManager;
+import org.incendo.cloud.Command;
+import org.incendo.cloud.parser.standard.StringParser;
+import org.incendo.cloud.minecraft.extras.RichDescription;
+import org.incendo.cloud.velocity.VelocityCommandManager;
 import com.google.inject.Inject;
 import com.oskarsmc.message.configuration.MessageSettings;
 import com.oskarsmc.message.event.MessageEvent;
@@ -34,14 +34,14 @@ public final class ReplyCommand {
         commandManager.command(builder
                 .senderType(Player.class)
                 .permission(new DefaultPermission("osmc.message.reply"))
-                .argument(StringArgument.of("message", StringArgument.StringMode.GREEDY), RichDescription.translatable("oskarsmc.message.command.common.argument.message-description"))
+                .required("message", StringParser.greedyStringParser(), RichDescription.translatable("oskarsmc.message.command.common.argument.message-description"))
                 .handler(context -> {
                     Map<Player, Player> conversations = messageHandler.conversations();
 
-                    Player receiver = conversations.get(((Player) context.getSender()));
+                    Player receiver = conversations.get(context.sender());
 
                     proxyServer.getEventManager().fire(new MessageEvent(
-                            context.getSender(),
+                            context.sender(),
                             receiver,
                             context.get("message")
                     )).thenAccept(messageHandler::handleMessageEvent);

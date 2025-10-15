@@ -8,29 +8,29 @@ jobs:
   build:
     strategy:
       matrix:
-        java: [ "17" ]
+        java: [ "21" ]
         os: [ "ubuntu-latest" ]
 
     runs-on: ${{ matrix.os }}
     steps:
       - name: "checkout"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: "setup java"
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ matrix.java }}
-          distribution: 'adopt'
+          distribution: 'zulu'
           cache: gradle
 
       - name: "validate gradle wrapper"
-        uses: gradle/wrapper-validation-action@v1
+        uses: gradle/actions/wrapper-validation@v3
 
       - name: gradle build
         run: ./gradlew clean build
 
       # Upload Artifacts
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: message
           path: build/libs
@@ -38,24 +38,24 @@ jobs:
   publish:
     strategy:
       matrix:
-        java: [ "17" ]
+        java: [ "21" ]
         os: [ "ubuntu-latest" ]
 
     needs: build
     runs-on: ${{ matrix.os }}
     steps:
       - name: "checkout"
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: "setup java"
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v5
         with:
           java-version: ${{ matrix.java }}
-          distribution: 'adopt'
+          distribution: 'zulu'
           cache: gradle
 
       - name: "validate gradle wrapper"
-        uses: gradle/wrapper-validation-action@v1
+        uses: gradle/actions/wrapper-validation@v3
 
       - name: gradle publish
         run: ./gradlew build publish publishAllPublicationsToHangar

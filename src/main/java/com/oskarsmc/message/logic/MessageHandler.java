@@ -5,6 +5,7 @@ import com.oskarsmc.message.event.MessageEvent;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.proxy.Player;
 import io.github.miniplaceholders.api.MiniPlaceholders;
+import io.github.miniplaceholders.api.types.RelationalAudience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -93,13 +94,15 @@ public final class MessageHandler {
         }
 
         if (messageSettings.miniPlaceholdersIntegration()) {
-            builder.resolver(MiniPlaceholders.getRelationalGlobalPlaceholders(event.sender(), event.recipient()));
+            builder.resolver(MiniPlaceholders.relationalGlobalPlaceholders());
         }
 
         TagResolver placeholders = builder.resolver(event.extraPlaceholders()).build();
 
-        Component senderMessage = miniMessage.deserialize(messageSettings.messageSentMiniMessage(), placeholders);
-        Component receiverMessage = miniMessage.deserialize(messageSettings.messageReceivedMiniMessage(), placeholders);
+        Component senderMessage = miniMessage.deserialize(messageSettings.messageSentMiniMessage(),
+            RelationalAudience.from(event.sender(), event.recipient()), placeholders);
+        Component receiverMessage = miniMessage.deserialize(messageSettings.messageReceivedMiniMessage(),
+            RelationalAudience.from(event.recipient(), event.sender()), placeholders);
 
         event.sender().sendMessage(senderMessage);
         event.recipient().sendMessage(receiverMessage);
