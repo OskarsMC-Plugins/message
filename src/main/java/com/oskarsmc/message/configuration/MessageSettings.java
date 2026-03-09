@@ -35,6 +35,7 @@ public final class MessageSettings {
     private List<String> messageAlias;
     private List<String> replyAlias;
     private List<String> socialSpyAlias;
+    private List<String> ignoreAlias;
 
     private boolean luckpermsIntegration;
     private boolean miniPlaceholdersIntegration;
@@ -84,6 +85,7 @@ public final class MessageSettings {
         this.messageAlias = toml.getList("aliases.message");
         this.replyAlias = toml.getList("aliases.reply");
         this.socialSpyAlias = toml.getList("aliases.socialspy");
+        this.ignoreAlias = toml.getList("aliases.ignore");
 
         // Exceptions
         this.customErrorHandlers = new HashMap<>();
@@ -275,6 +277,16 @@ public final class MessageSettings {
     @Pure
     public List<String> replyAliases() {
         return replyAlias;
+    }
+
+    /**
+     * Get the aliases of the ignore command.
+     *
+     * @return The aliases of the ignore command.
+     */
+    @Pure
+    public List<String> ignoreAliases() {
+        return ignoreAlias;
     }
 
     /**

@@ -8,17 +8,33 @@
         "oskarsmc.message.command.common.argument.message-description": "The message to send to the player.",
         "oskarsmc.message.command.socialspy.on": "SocialSpy enabled.",
         "oskarsmc.message.command.socialspy.off": "SocialSpy disabled.",
-        "oskarsmc.message.command.common.self-sending-error": "You cannot send messages to yourself."
+        "oskarsmc.message.command.common.self-sending-error": "You cannot send messages to yourself.",
+
+        "oskarsmc.message.command.ignore.argument.player": "The player to toggle ignore for.",
+        "oskarsmc.message.command.ignore.on": "You are now ignoring {0}.",
+        "oskarsmc.message.command.ignore.off": "You are no longer ignoring {0}.",
+        "oskarsmc.message.command.ignore.self-error": "You cannot ignore yourself.",
+        "oskarsmc.message.command.ignore.list.header": "Players you are currently ignoring:",
+        "oskarsmc.message.command.ignore.list.empty": "You are not ignoring anyone.",
+        "oskarsmc.message.command.ignore.list.entry": "• {0}"
       }
     },
     {
       "language-tag": "es-ES",
       "translations": {
         "oskarsmc.message.command.message.argument.player-argument": "El jugador al cual enviar el mensaje.",
-        "oskarsmc.message.command.common.argument.message-description": "El mensaje que se enviara al jugador.",
+        "oskarsmc.message.command.common.argument.message-description": "El mensaje que se enviará al jugador.",
         "oskarsmc.message.command.socialspy.on": "SocialSpy habilitado.",
         "oskarsmc.message.command.socialspy.off": "SocialSpy deshabilitado.",
-        "oskarsmc.message.command.common.self-sending-error": "No puedes enviarte mensajes a ti mismo."
+        "oskarsmc.message.command.common.self-sending-error": "No puedes enviarte mensajes a ti mismo.",
+
+        "oskarsmc.message.command.ignore.argument.player": "El jugador para (des)ignorar.",
+        "oskarsmc.message.command.ignore.on": "Ahora estás ignorando a {0}.",
+        "oskarsmc.message.command.ignore.off": "Ya no estás ignorando a {0}.",
+        "oskarsmc.message.command.ignore.self-error": "No puedes ignorarte a ti mismo.",
+        "oskarsmc.message.command.ignore.list.header": "Jugadores que estás ignorando actualmente:",
+        "oskarsmc.message.command.ignore.list.empty": "No estás ignorando a nadie.",
+        "oskarsmc.message.command.ignore.list.entry": "• {0}"
       }
     }
   ]

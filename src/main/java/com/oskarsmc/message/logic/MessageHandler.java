@@ -28,6 +28,7 @@ public final class MessageHandler {
     private final MessageSettings messageSettings;
     private final MiniMessage miniMessage = MiniMessage.miniMessage();
     private final ConcurrentHashMap<Player, Player> conversations = new ConcurrentHashMap<>();
+    private final IgnoreManager ignoreManager;
     /**
      * Conversation Watchers
      */
@@ -38,8 +39,9 @@ public final class MessageHandler {
      *
      * @param messageSettings Message Settings
      */
-    public MessageHandler(MessageSettings messageSettings) {
+    public MessageHandler(MessageSettings messageSettings, IgnoreManager ignoreManager) {
         this.messageSettings = messageSettings;
+        this.ignoreManager = ignoreManager;
     }
 
     /**
@@ -102,11 +104,19 @@ public final class MessageHandler {
         Component receiverMessage = miniMessage.deserialize(messageSettings.messageReceivedMiniMessage(), placeholders);
 
         event.sender().sendMessage(senderMessage);
-        event.recipient().sendMessage(receiverMessage);
 
-        if (event.sender() instanceof Player player) {
-            conversations.remove(event.recipient());
-            conversations.put(event.recipient(), player);
+        boolean isIgnored = false;
+        if (event.sender() instanceof Player senderPlayer) {
+            isIgnored = ignoreManager.isIgnored(event.recipient(), senderPlayer);
+        }
+
+        if (!isIgnored) {
+            event.recipient().sendMessage(receiverMessage);
+
+            if (event.sender() instanceof Player player) {
+                conversations.remove(event.recipient());
+                conversations.put(event.recipient(), player);
+            }
         }
 
         Component socialSpyComponent = miniMessage.deserialize(messageSettings.messageSocialSpyMiniMessage(), placeholders);

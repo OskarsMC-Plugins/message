@@ -7,6 +7,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
+import com.oskarsmc.message.command.IgnoreCommand;
 import com.oskarsmc.message.command.MessageCommand;
 import com.oskarsmc.message.command.ReplyCommand;
 import com.oskarsmc.message.command.SocialSpyCommand;
@@ -93,6 +94,7 @@ public final class Message {
             injector.getInstance(MessageCommand.class);
             injector.getInstance(SocialSpyCommand.class);
             injector.getInstance(ReplyCommand.class);
+            injector.getInstance(IgnoreCommand.class);
 
             // Metrics
             injector.getInstance(MessageMetrics.class);

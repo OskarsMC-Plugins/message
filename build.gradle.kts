@@ -3,7 +3,7 @@ import java.io.*
 
 plugins {
     java
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("com.gradleup.shadow") version "9.0.0-beta4"
     `maven-publish`
     id("xyz.jpenilla.run-velocity") version "2.0.0"
     id("io.papermc.hangar-publish-plugin") version "0.0.4"
@@ -40,7 +40,7 @@ fun runCommand(command: String): String {
 val release = System.getenv("GRADLE_RELEASE").equals("true", ignoreCase = true)
 val gitHash = runCommand("git rev-parse --short HEAD")
 group = "com.oskarsmc"
-version = "1.4.0"
+version = "1.5.0"
 
 if (!release) {
     version = "$version-$gitHash-SNAPSHOT"
@@ -61,6 +61,7 @@ tasks {
         relocate("org.bstats", "com.oskarsmc.message.relocated.bstats")
         relocate("cloud.commandframework", "com.oskarsmc.message.relocated.cloud")
         relocate("io.leangen.geantyref", "com.oskarsmc.message.relocated.geantyref")
+        archiveFileName.set("${project.name}-${project.version}.jar")
     }
 
     build {

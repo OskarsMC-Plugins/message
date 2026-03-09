@@ -3,14 +3,19 @@ package com.oskarsmc.message.util;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.oskarsmc.message.command.IgnoreCommand;
 import com.oskarsmc.message.command.MessageCommand;
 import com.oskarsmc.message.command.ReplyCommand;
 import com.oskarsmc.message.command.SocialSpyCommand;
 import com.oskarsmc.message.configuration.MessageSettings;
+import com.oskarsmc.message.logic.IgnoreManager;
 import com.oskarsmc.message.logic.MessageHandler;
 import com.oskarsmc.message.logic.MessageMetrics;
+import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+
+import java.nio.file.Path;
 
 /**
  * The message guice module.
@@ -34,12 +39,20 @@ public final class MessageModule extends AbstractModule {
         bind(ReplyCommand.class).in(Singleton.class);
         bind(SocialSpyCommand.class).in(Singleton.class);
         bind(MessageMetrics.class).in(Singleton.class);
+        bind(IgnoreCommand.class).in(Singleton.class);
     }
 
     @Contract(" -> new")
     @Singleton
     @Provides
-    private @NotNull MessageHandler provideHandler() {
-        return new MessageHandler(messageSettings);
+    private @NotNull MessageHandler provideHandler(IgnoreManager ignoreManager) {
+        return new MessageHandler(messageSettings, ignoreManager);
     }
+
+    @Singleton
+    @Provides
+    private @NotNull IgnoreManager provideIgnoreManager(@DataDirectory Path dataDirectory) {
+        return new IgnoreManager(dataDirectory);
+    }
+
 }

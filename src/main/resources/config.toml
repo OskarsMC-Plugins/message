@@ -28,6 +28,7 @@ message-socialspy = "<gradient:aqua:blue>[SocialSpy] </gradient>[<white><sender>
 message = ["msg", "tell"]
 reply = ["r"]
 socialspy = ["ss"]
+ignore = ["ignore", "ig"]
 
 # Please don't touch this
 [developer-info]
